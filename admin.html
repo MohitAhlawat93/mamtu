@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#5c0a28">
+<title>Mamtu Control</title>
+<link rel="stylesheet" href="/admin.css?v=mc-20261120-v1">
+<script src="/admin.js?v=mc-20261120-v1" defer></script>
+</head>
+<body class="mc-body">
+<main class="mc-shell">
+<section class="mc-login" data-login-view>
+  <div class="mc-mark">M</div>
+  <p class="mc-kicker">PRIVATE OWNER AREA</p>
+  <h1>Mamtu Control</h1>
+  <p class="mc-lede">Update the live website and Mamtu Assistant without editing GitHub files.</p>
+  <form class="mc-login-form" data-login-form>
+    <label>
+      <span>Owner key</span>
+      <input type="password" name="token" autocomplete="current-password" required placeholder="Enter mamtu_token">
+    </label>
+    <button class="mc-primary" type="submit">Enter control</button>
+    <p class="mc-message" data-login-message aria-live="polite"></p>
+  </form>
+  <p class="mc-note">This page is private, noindexed and uses a signed HttpOnly owner session.</p>
+  <a class="mc-back" href="/">← Back to website</a>
+</section>
+
+<section class="mc-app" data-app-view hidden>
+  <header class="mc-topbar">
+    <div>
+      <p class="mc-kicker">OWNER DASHBOARD</p>
+      <h1>Mamtu Control</h1>
+    </div>
+    <div class="mc-top-actions">
+      <a class="mc-secondary" href="/" target="_blank" rel="noopener">View live site ↗</a>
+      <button class="mc-text" type="button" data-export>Export JSON</button>
+      <button class="mc-text" type="button" data-logout>Log out</button>
+    </div>
+  </header>
+
+  <section class="mc-status-grid" aria-label="Control status">
+    <article><span class="mc-dot" data-storage-dot></span><strong data-storage-label>Checking storage…</strong><small>D1 persistence</small></article>
+    <article><strong data-version>Version 0</strong><small data-updated>Not saved yet</small></article>
+    <article><strong data-availability-summary>Accepting enquiries</strong><small>Public availability</small></article>
+  </section>
+
+  <div class="mc-warning" data-storage-warning hidden>
+    <strong>D1 is not connected.</strong>
+    <span>You can view the dashboard, but Save & apply is disabled until the Worker has a D1 binding named <code>MAMTU_DB</code>, <code>DB</code> or <code>mamtu_db</code>.</span>
+  </div>
+
+  <nav class="mc-tabs" aria-label="Mamtu Control sections">
+    <button type="button" class="is-active" data-tab="home">Home</button>
+    <button type="button" data-tab="website">Website</button>
+    <button type="button" data-tab="rates">Rates</button>
+    <button type="button" data-tab="media">Media</button>
+    <button type="button" data-tab="assistant">Assistant</button>
+    <button type="button" data-tab="history">History</button>
+  </nav>
+
+  <section class="mc-panel is-active" data-panel="home">
+    <div class="mc-panel-head">
+      <div><p class="mc-kicker">QUICK CONTROL</p><h2>What should visitors see right now?</h2></div>
+    </div>
+
+    <div class="mc-card">
+      <h3>Availability</h3>
+      <p>Changes here update the public banner and the assistant’s availability answer.</p>
+      <div class="mc-choice-grid" data-status-choices>
+        <label><input type="radio" name="availabilityStatus" value="accepting"><span>Accepting enquiries</span></label>
+        <label><input type="radio" name="availabilityStatus" value="limited"><span>Limited availability</span></label>
+        <label><input type="radio" name="availabilityStatus" value="away"><span>Temporarily away</span></label>
+        <label><input type="radio" name="availabilityStatus" value="unavailable"><span>Not accepting</span></label>
+      </div>
+      <div class="mc-grid two">
+        <label class="mc-field"><span>Availability note</span><input data-field="availability.note" maxlength="240"></label>
+        <label class="mc-field"><span>Keep until (optional)</span><input type="date" data-field="availability.until"></label>
+        <label class="mc-field"><span>Then return to</span>
+          <select data-field="availability.revert">
+            <option value="accepting">Accepting enquiries</option>
+            <option value="limited">Limited availability</option>
+            <option value="away">Temporarily away</option>
+            <option value="unavailable">Not accepting</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="mc-card">
+      <div class="mc-inline-head">
+        <div><h3>Public announcement</h3><p>Optional short strip shown across public pages.</p></div>
+        <label class="mc-switch"><input type="checkbox" data-field="announcement.enabled"><span></span></label>
+      </div>
+      <label class="mc-field"><span>Announcement text</span><textarea rows="3" maxlength="260" data-field="announcement.text" placeholder="Example: Limited appointments this weekend."></textarea></label>
+    </div>
+  </section>
+
+  <section class="mc-panel" data-panel="website" hidden>
+    <div class="mc-panel-head"><div><p class="mc-kicker">WEBSITE</p><h2>Public details & contact</h2></div></div>
+
+    <div class="mc-card">
+      <h3>Contact routes</h3>
+      <div class="mc-grid two">
+        <label class="mc-field"><span>WhatsApp display</span><input data-field="contact.whatsappDisplay" maxlength="40"></label>
+        <label class="mc-field"><span>WhatsApp URL</span><input type="url" data-field="contact.whatsappUrl"></label>
+        <label class="mc-field"><span>Telegram handle</span><input data-field="contact.telegramHandle" maxlength="64"></label>
+        <label class="mc-field"><span>Telegram URL</span><input type="url" data-field="contact.telegramUrl"></label>
+      </div>
+    </div>
+
+    <div class="mc-card">
+      <h3>Public profile</h3>
+      <div class="mc-grid two">
+        <label class="mc-field"><span>Public base</span><input data-field="profile.base" maxlength="100"></label>
+        <label class="mc-field full"><span>Profile intro used by the assistant</span><textarea rows="4" data-field="profile.intro" maxlength="900"></textarea></label>
+        <label class="mc-field full"><span>Residence wording</span><textarea rows="3" data-field="profile.residence" maxlength="700"></textarea></label>
+        <label class="mc-field full"><span>Personality wording</span><textarea rows="3" data-field="profile.personality" maxlength="700"></textarea></label>
+        <label class="mc-field full"><span>Physical presence wording</span><textarea rows="3" data-field="profile.physicalPresence" maxlength="500"></textarea></label>
+        <label class="mc-field full"><span>Hygiene wording</span><textarea rows="3" data-field="profile.hygiene" maxlength="500"></textarea></label>
+        <label class="mc-field full"><span>Photograph / verification wording</span><textarea rows="3" data-field="profile.photographs" maxlength="500"></textarea></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="mc-panel" data-panel="rates" hidden>
+    <div class="mc-panel-head"><div><p class="mc-kicker">RATES</p><h2>Update public pricing once</h2><p>Enter the amount only, such as ₹40,000. The website adds labels like “From” or “Around”.</p></div></div>
+    <div class="mc-card">
+      <div class="mc-grid two">
+        <label class="mc-field"><span>Incall · 1 hour</span><input data-field="rates.incall1h" maxlength="48"></label>
+        <label class="mc-field"><span>Incall · 2 hours</span><input data-field="rates.incall2h" maxlength="48"></label>
+        <label class="mc-field"><span>Outcall · 1 hour</span><input data-field="rates.outcall1h" maxlength="48"></label>
+        <label class="mc-field"><span>Outcall · 2 hours</span><input data-field="rates.outcall2h" maxlength="48"></label>
+        <label class="mc-field"><span>Full night</span><input data-field="rates.fullNight" maxlength="48"></label>
+        <label class="mc-field"><span>Two shots</span><input data-field="rates.twoShots" maxlength="48"></label>
+        <label class="mc-field"><span>Threesome full night</span><input data-field="rates.threesomeNight" maxlength="48"></label>
+        <label class="mc-field"><span>Video call · 30 min</span><input data-field="rates.webcam30" maxlength="48"></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="mc-panel" data-panel="media" hidden>
+    <div class="mc-panel-head"><div><p class="mc-kicker">MEDIA</p><h2>Choose the homepage features</h2><p>This version safely rearranges media already in the repository. Uploads can be added later with R2.</p></div></div>
+    <div class="mc-card">
+      <div class="mc-grid three">
+        <label class="mc-field"><span>Featured image 1</span><select data-field="media.homeImage1" data-image-select></select></label>
+        <label class="mc-field"><span>Featured image 2</span><select data-field="media.homeImage2" data-image-select></select></label>
+        <label class="mc-field"><span>Featured video</span><select data-field="media.homeVideo" data-video-select></select></label>
+      </div>
+      <div class="mc-preview-row">
+        <figure><img data-preview="media.homeImage1" alt="Featured image preview"></figure>
+        <figure><img data-preview="media.homeImage2" alt="Featured image preview"></figure>
+        <figure><video data-preview="media.homeVideo" muted playsinline controls></video></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="mc-panel" data-panel="assistant" hidden>
+    <div class="mc-panel-head"><div><p class="mc-kicker">MAMTU ASSISTANT</p><h2>Availability control for the AI</h2><p>The system prompt and original knowledge files stay untouched.</p></div></div>
+    <div class="mc-card">
+      <div class="mc-inline-head">
+        <div><h3>Assistant enabled</h3><p>Turn off temporarily without redeploying.</p></div>
+        <label class="mc-switch"><input type="checkbox" data-field="assistant.enabled"><span></span></label>
+      </div>
+      <label class="mc-field"><span>Message while paused</span><textarea rows="3" data-field="assistant.pausedMessage" maxlength="320"></textarea></label>
+    </div>
+  </section>
+
+  <section class="mc-panel" data-panel="history" hidden>
+    <div class="mc-panel-head"><div><p class="mc-kicker">HISTORY & RECOVERY</p><h2>Restore an earlier saved state</h2><p>Every successful Save & apply creates a version in D1.</p></div></div>
+    <div class="mc-card">
+      <div class="mc-history" data-history>
+        <p class="mc-muted">History will appear after your first save.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="mc-savebar">
+    <div>
+      <strong data-save-state>All changes loaded</strong>
+      <span data-save-detail>Edits are not live until you use Save & apply.</span>
+    </div>
+    <button class="mc-primary" type="button" data-save>Save & apply</button>
+  </div>
+</section>
+</main>
+</body>
+</html>
