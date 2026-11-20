@@ -100,3 +100,5 @@ Do not add private residential addresses, identity documents, credentials, or fa
 ## Deployment sync
 
 Deployment sync: Details page removed after the latest premium gallery/services updates; practical facts retained in Mamtu Assistant RAG.
+
+Deployment trigger: seven-page site with practical details served through Mamtu Assistant RAG.
