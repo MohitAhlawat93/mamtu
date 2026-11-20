@@ -11,5 +11,12 @@
   "ai": {
     "binding": "AI"
   },
-  "workers_dev": true
+  "workers_dev": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "mamtu_db",
+      "database_id": "9912a210-792e-4cd6-b9ab-9b0500ee93b5"
+    }
+  ]
 }
