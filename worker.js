@@ -56,7 +56,7 @@ function suggestionFor(message=""){
   if(/photo|picture|gallery|look|style|outfit/.test(q))return {path:"/gallery.html",label:"Open gallery"};
   if(/video|film|motion|clip/.test(q))return {path:"/videos.html",label:"Watch videos"};
   if(/about|who|profile|personality|values/.test(q))return {path:"/about.html",label:"Meet Mamtu"};
-  if(/privacy|address|boundary|details/.test(q))return {path:"/details.html",label:"Read practical details"};
+  if(/privacy|address|boundary|details/.test(q))return null;
   if(/contact|book|enquir|available|availability|meet|whatsapp|telegram|price|rate|cost/.test(q))return {path:"/contact.html",label:"Contact Mamtu"};
   return null;
 }
@@ -75,6 +75,11 @@ function directAnswerFor(message="",data=MAMTU_DATA){
   if(/who is mamtu|tell me about mamtu|mamtu'?s profile|about mamtu/.test(q))return p.intro;
   if(/where.*mamtu|where.*based|where.*live|location|saket/.test(q))return "Mamtu is publicly based in Saket, New Delhi. Her exact private residential address is intentionally not published.";
   if(/personality|what.*she.*like|what is she like|vibe|style/.test(q))return "Mamtu’s public profile describes her as "+p.personality.join(", ")+". Her visible style ranges across "+p.style.join(", ")+", while respect and privacy are important to her.";
+  if(/figure|36[- ]?28[- ]?42|physical|curves/.test(q))return data.practical?.physicalPresence||"Mamtu’s public figure information is 36-28-42.";
+  if(/hygiene|checkup|check-up|cleanliness/.test(q))return data.practical?.hygiene||"Mamtu states that she takes hygiene seriously.";
+  if(/face verification|verify face|real photos|genuine photos|photographs genuine/.test(q))return data.practical?.photographs||"Mamtu states that the public photographs are genuine, with face verification handled privately.";
+  if(/hotel|oyo|outcall location|five[- ]star|5[- ]star/.test(q))return (data.practical?.standards||[]).filter(x=>/hotel|OYO|outcall/i.test(x)).join(" ")||"Outcalls are limited to five-star hotels.";
+  if(/minimum engagement|minimum time|two hours|2 hours/.test(q))return (data.practical?.standards||[]).find(x=>/Minimum engagement/i.test(x))||"Minimum engagement is generally two hours.";
   if(/price|pricing|rate|rates|cost|how much|fee/.test(q))return "Mamtu does not currently publish exact pricing on the website. Her services are listed as by arrangement; use WhatsApp or Telegram to ask for current details.";
   if(/available|availability|today|tonight|tomorrow|this week/.test(q))return "Live availability is not published or guaranteed by the website. Mamtu confirms current availability herself through her official WhatsApp or Telegram.";
   if(/whatsapp|phone|number/.test(q))return "Mamtu’s official WhatsApp is "+c.whatsappDisplay+". You can open it from the Contact page.";
