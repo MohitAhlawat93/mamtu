@@ -44,3 +44,18 @@ $('enquiry').addEventListener('submit',e=>{e.preventDefault();const form=e.curre
  window.location.href='mailto:'+OWNER_CONTACT_EMAIL+'?subject='+subject+'&body='+body;
  status.textContent='Your email app should open now. Please send the prepared message there; the site does not submit or store it.';
 });
+/* Limited, local FAQ guide. No network calls, knowledge base, model or personal data storage. */
+const assistToggle=$('assistantToggle'),assistPanel=$('assistantPanel'),assistClose=$('assistantClose'),assistForm=$('assistantForm'),assistLog=$('assistantLog');
+function setAssist(open){assistPanel.hidden=!open;assistToggle.setAttribute('aria-expanded',String(open));if(open)$('assistantInput').focus();else assistToggle.focus();}
+assistToggle.addEventListener('click',()=>setAssist(assistPanel.hidden));
+assistClose.addEventListener('click',()=>setAssist(false));
+function faqReply(question){
+ const q=question.toLowerCase();
+ if(/photo|image|picture|gallery|portrait|film|video/.test(q))return 'Explore the Gallery and Motion Archive on this page. The current artwork is illustrative; approved portraits and videos have not been supplied yet.';
+ if(/contact|book|enquir|email|message|availability|rate|price|cost|service/.test(q))return 'You can preview the enquiry section, but contact details, availability, services and prices have not been verified by the owner. No bookings or messages can be submitted here yet.';
+ if(/who|about|story|mamtu|location|where/.test(q))return 'MAMTU is a new editorial portfolio in development. An approved biography and location have not been provided. The Story section currently contains introductory design copy.';
+ if(/privacy|data|store|save/.test(q))return 'This preview assistant responds locally in your browser. It does not send your questions to a server or store them. The enquiry form also does not collect or send data.';
+ if(/hello|hi|hey|good morning/.test(q))return 'Welcome to MAMTU. Ask me about the gallery, upcoming film, enquiry process or how this preview handles privacy.';
+ return 'I only have verified information about this website preview. Try asking about the gallery, contact, privacy or the story.';
+}
+assistForm.addEventListener('submit',e=>{e.preventDefault();const input=$('assistantInput'),question=input.value.trim();if(!question)return;const add=(v,role)=>{const p=document.createElement('p');p.className='assistant-bubble '+role;p.textContent=v;assistLog.append(p);};add(question,'from-user');add(faqReply(question),'from-assistant');input.value='';assistLog.scrollTop=assistLog.scrollHeight;});
