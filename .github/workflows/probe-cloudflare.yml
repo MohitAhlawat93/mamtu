@@ -1,0 +1,27 @@
+name: Verify Cloudflare preview endpoint
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Cloudflare public URL candidates
+        shell: bash
+        run: |
+          set +e
+          for url in 'https://mamtu.amohit920.workers.dev/' 'https://mamtu.pages.dev/' 'https://sharvarock-preview.amohit920.workers.dev/'; do
+            echo "PROBE_URL=$url"
+            echo "DNS:"
+            getent ahostsv4 "${url#https://}" | head -2
+            page="$(mktemp)"
+            status="$(curl -L -sS -o "$page" -w '%{http_code}' --connect-timeout 8 --max-time 20 "$url")"
+            echo "HTTP_STATUS=$status"
+            echo "BODY_TITLE=$(grep -oE '<title>[^<]*</title>' "$page" | head -1)"
+            echo "HAS_MAMTU=$(grep -ci 'MAMTU' "$page")"
+            rm -f "$page"
+            echo "-----"
+          done
