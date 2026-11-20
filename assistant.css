@@ -32,3 +32,167 @@ body.assistant-open{overflow:hidden}
 }
 @media(max-width:390px){.afterhours-grid{grid-template-columns:1fr}.afterhours-grid a{min-height:68px}.assistant-panel{width:min(285px,calc(100vw - 38px))}}
 @media(prefers-reduced-motion:reduce){.assistant-panel,.assistant-launcher,.afterhours-launcher,.afterhours-card{animation:none!important;transition:none!important}}
+
+
+/* Rebecca-matched assistant sizing + mobile QA */
+.assistant-launcher{
+  right:22px;
+  bottom:22px;
+  gap:8px;
+  padding:9px 13px 9px 9px;
+}
+.assistant-spark{
+  width:25px;
+  height:25px;
+  flex-basis:25px;
+}
+.assistant-launcher>span:last-child{
+  font-size:10px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.assistant-panel{
+  right:20px;
+  bottom:20px;
+  width:min(390px,calc(100vw - 28px));
+  height:min(520px,calc(100svh - 96px));
+  max-width:none;
+  max-height:none;
+  min-width:340px;
+  min-height:360px;
+  border-radius:24px;
+}
+.assistant-thread{
+  padding:16px 14px 12px;
+}
+.assistant-message{
+  max-width:90%;
+  padding:11px 13px;
+  font-size:12.75px;
+  line-height:1.55;
+  border-radius:17px;
+}
+.assistant-chips{
+  padding:1px 14px 9px;
+  gap:6px;
+}
+.assistant-chip{
+  padding:8px 10px;
+  font-size:9px;
+}
+.assistant-form{
+  padding:10px 12px;
+}
+.assistant-form input{
+  padding:13px 14px;
+}
+.assistant-disclaimer{
+  padding:0 14px 10px;
+  font-size:8.5px;
+}
+@media(max-width:640px){
+  .assistant-launcher{
+    right:14px;
+    bottom:14px;
+  }
+  .assistant-launcher>span:last-child{
+    display:none;
+  }
+  .assistant-panel{
+    left:auto;
+    right:12px;
+    bottom:calc(72px + env(safe-area-inset-bottom));
+    top:auto;
+    width:min(280px,calc(100vw - 64px));
+    height:min(39svh,310px);
+    min-width:0;
+    min-height:0;
+    max-width:none;
+    max-height:none;
+    border-radius:18px;
+    overflow:hidden;
+  }
+  .assistant-head{
+    padding:10px 11px 9px;
+  }
+  .assistant-head strong{
+    font-size:17px;
+  }
+  .assistant-head small{
+    font-size:8px;
+  }
+  .assistant-thread{
+    padding:10px;
+  }
+  .assistant-message{
+    max-width:94%;
+    padding:8px 10px;
+    font-size:10.5px;
+    line-height:1.45;
+  }
+  .assistant-chips{
+    padding:0 10px 7px;
+    gap:5px;
+  }
+  .assistant-chip{
+    padding:6px 8px;
+    font-size:8px;
+  }
+  .assistant-form{
+    grid-template-columns:1fr 38px;
+    padding:7px 8px;
+    gap:6px;
+  }
+  .assistant-form input{
+    min-height:42px;
+    padding:9px 10px;
+    font-size:16px;
+  }
+  .assistant-form button{
+    min-width:38px;
+    min-height:42px;
+  }
+  .assistant-disclaimer{
+    padding:0 9px 7px;
+    font-size:7.5px;
+    line-height:1.35;
+  }
+  .afterhours-launcher{
+    left:14px;
+    bottom:14px;
+    padding-right:11px;
+  }
+  .afterhours-copy small{
+    display:none;
+  }
+  .afterhours-copy strong{
+    font-size:.9rem;
+  }
+  .afterhours-backdrop{
+    align-items:end;
+    padding:0;
+  }
+  .afterhours-card{
+    width:100%;
+    max-height:82svh;
+    border-radius:26px 26px 0 0;
+    border-bottom:0;
+    padding:28px 20px max(24px,env(safe-area-inset-bottom));
+  }
+  .afterhours-card h2{
+    font-size:2.65rem;
+  }
+}
+@media(max-width:390px){
+  .assistant-panel{
+    right:10px;
+    width:min(270px,calc(100vw - 54px));
+    height:min(38svh,300px);
+  }
+  .afterhours-grid{
+    grid-template-columns:1fr;
+  }
+  .afterhours-grid a{
+    min-height:68px;
+  }
+}
