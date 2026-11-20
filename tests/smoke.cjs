@@ -9,8 +9,8 @@ for(const page of pages){
   const content=read(page);
   assert(content.includes('name="viewport"'),"Mobile viewport missing: "+page);
   assert(content.includes('name="robots" content="noindex,nofollow"'),"Unapproved staging indexing: "+page);
-  assert(content.includes('href="/atelier.css"'),"Stylesheet missing: "+page);
-  assert(content.includes('src="/atelier.js"'),"Script missing: "+page);
+  assert(content.includes('href="/atelier.css?v=editorial-20261120"'),"Versioned stylesheet missing: "+page);
+  assert(content.includes('src="/atelier.js?v=editorial-20261120"'),"Versioned JavaScript missing: "+page);
   for(const link of pages)assert(content.includes('href="/'+link+'"'),"Navigation missing "+link+" in "+page);
   assert(!content.includes("paryavarn complex"),"Private residential details published: "+page);
   assert(!content.includes('href="#gallery"'),"One-page link still present: "+page);
