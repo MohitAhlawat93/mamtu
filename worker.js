@@ -81,7 +81,7 @@ function directAnswerFor(message="",data=MAMTU_DATA){
   if(/who is mamtu|tell me about mamtu|mamtu'?s profile|about mamtu/.test(q))return p.intro;
   if(/where.*mamtu|where.*based|where.*live|location|saket|paryavaran|paryavarn/.test(q))return practical?.residence||"Mamtu is based in Saket, New Delhi, in her own private flat (Paryavaran Complex area). Exact address is shared only after a confirmed booking.";
   if(/personality|what.*she.*like|what is she like|vibe|naughty|playful/.test(q))return practical?.personality||("Mamtu is described as "+p.personality.join(", ")+".");
-  if(/figure|36[- ]?28[- ]?42|physical|curves|boobs|breast|ass|hips|measurements|body size/.test(q))return practical?.physicalPresence||"Public figure: 36-28-42 (bust 36, waist 28, hips 42).";
+  if(/\bfigure\b|36[- ]?28[- ]?42|\bphysical(?: presence)?\b|\bcurves?\b|\bboobs?\b|\bbreasts?\b|\bass\b|\bhips?\b|\bmeasurements?\b|\bbody size\b/.test(q))return practical?.physicalPresence||"Public figure: 36-28-42 (bust 36, waist 28, hips 42).";
   if(/hygiene|checkup|check-up|cleanliness|clean\b|disease|hiv|tested/.test(q))return practical?.hygiene||"She is very hygienic and does regular full-body checkups. Safe practices are preferred.";
   if(/face verification|verify face|real photos|genuine photos|photographs genuine|photoshop|fake photo/.test(q))return practical?.photographs||"All public photographs are 100% genuine. Face pics are limited for privacy; face verification is offered after hotel booking confirmation.";
   if(/hotel|oyo|outcall location|five[- ]star|5[- ]star|3[- ]star|4[- ]star/.test(q))return "Outcalls are only to five-star hotels. OYO, 3-star and 4-star are not accepted. Advance is required for outcalls.";
