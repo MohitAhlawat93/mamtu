@@ -30,7 +30,7 @@ assert(home.includes('class="home-services"'),"Homepage services preview missing
 assert(home.includes('class="home-reviews-preview"'),"Homepage reviews preview missing");
 assert(home.includes("/assets/images/6.jpeg")&&home.includes("/assets/images/3.jpeg")&&home.includes("/assets/videos/1.mp4"),"Featured media changed");
 assert.equal((gallery.match(/data-photo-index="/g)||[]).length,8,"Current gallery should render eight uploaded images");
-assert.equal((gallery.match(/class="masonry-item"/g)||[]).length,8,"Premium masonry gallery should contain eight current images");
+assert.equal((gallery.match(/class="masonry-item(?: tall)?"/g)||[]).length,8,"Premium masonry gallery should contain eight current images");
 assert(gallery.includes('id="lightboxCount"'),"Gallery lightbox count should be present in the redesigned gallery");
 assert.equal((videos.match(/<video /g)||[]).length,3,"Current videos missing");
 assert.equal((videos.match(/class="film-description"/g)||[]).length,3,"Video editorial notes missing");
@@ -56,9 +56,12 @@ assert(assistantCss.includes(".assistant-panel"),"Assistant panel styling missin
 assert(assistantCss.includes(".afterhours-card"),"Afterhours popup styling missing");
 assert(workerSource.includes('url.pathname==="/api/assistant"'),"Worker assistant route missing");
 assert(workerSource.includes("GROQ_API_KEY"),"Groq RAG configuration missing");
+assert(workerSource.includes("env.AI.run"),"Cloudflare Workers AI integration missing");
+assert(workerSource.includes('mode:"rag-cloudflare"'),"Cloudflare-first RAG route missing");
+assert(workerSource.includes('mode:"rag-groq"'),"Groq fallback RAG route missing");
 assert(workerSource.includes("grounded-fallback"),"Grounded no-key fallback missing");
 assert(knowledgeSource.includes("retrieveMamtuKnowledge"),"Knowledge retrieval missing");
-assert(knowledgeSource.includes('id:"practical"'),"Former Details-page knowledge must remain in RAG");
+assert(/id:\s*"practical"/.test(knowledgeSource),"Former Details-page knowledge must remain in RAG");
 assert(!knowledgeSource.includes('/details.html'),"RAG must not point to removed Details page");
 assert(dataSource.includes('practical: {'),"Practical Details data missing from RAG source");
 assert(!dataSource.includes('{ path: "/details.html", label: "Details" }'),"Removed Details route still present in site data");
@@ -78,4 +81,5 @@ const worker=JSON.parse(read("wrangler.jsonc"));
 assert.equal(worker.main,"worker.js");
 assert.equal(worker.assets.directory,"./");
 assert.equal(worker.assets.binding,"ASSETS");
+assert.equal(worker.ai.binding,"AI");
 console.log("PASS: seven-page Mamtu site + practical Details knowledge in Mamtu Assistant RAG, premium gallery/services, Afterhours and responsive UI");
