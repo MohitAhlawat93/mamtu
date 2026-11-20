@@ -11,7 +11,6 @@
     "/videos.html":{intro:"I can help you understand what the video page contains and where to explore next.",prompts:[["Video collection","What is on Mamtu's video page?"],["Photos too","Where can I see Mamtu's photographs?"],["About Mamtu","Tell me about Mamtu."]]},
     "/services.html":{intro:"Tell me what kind of plan you have in mind and I’ll point you to the right public information.",prompts:[["Services","What services are listed?"],["Pricing","Are prices published?"],["Availability","How do I ask about availability?"]]},
     "/reviews.html":{intro:"I can explain how Mamtu’s review page works and why it avoids fabricated testimonials.",prompts:[["Reviews","Are there public reviews yet?"],["Trust","How does the site handle reviews?"],["Contact","How can I contact Mamtu?"]]},
-    "/details.html":{intro:"I can make the practical details easier to understand.",prompts:[["Location","Where is Mamtu based?"],["Privacy","What privacy details should I know?"],["Contact","What are Mamtu's official contact routes?"]]},
     "/contact.html":{intro:"I can help you decide what to include in a respectful first message.",prompts:[["Draft hello","What should I include in my first message?"],["WhatsApp","What is Mamtu's WhatsApp?"],["Telegram","What is Mamtu's Telegram?"]]}
   };
   let publicConfig={...defaults},enabled=true;
@@ -114,11 +113,16 @@
   };
   async function localGroundedAnswer(message=""){
     const q=String(message).toLowerCase();
-    let data=null;try{data=(await import("/data/mamtu-data.js?v=rag-20261120-v3")).MAMTU_DATA}catch{}
+    let data=null;try{data=(await import("/data/mamtu-data.js?v=rag-20261120-v6")).MAMTU_DATA}catch{}
     const c=data?.contact||{whatsappDisplay:"+91 836 841 0417",telegramHandle:"@mistressmamtu"};
     if(/^(hi|hello|hey|hiya|good morning|good afternoon|good evening)[!.?\\s]*$/.test(q))return "Hi ✦ Lovely to meet you. I’m Mamtu Assistant. What would you like to know?";
     if(/who are you|your name/.test(q))return "I’m Mamtu Assistant ✦ I can help with Mamtu’s public profile, gallery, services, practical details and contact routes.";
     if(/where|location|saket|delhi|based/.test(q))return "Mamtu is publicly based in Saket, New Delhi. Her exact private residential address is intentionally not published.";
+    if(/figure|36[- ]?28[- ]?42|physical|curves/.test(q))return data?.practical?.physicalPresence||"Mamtu’s public figure information is 36-28-42.";
+    if(/hygiene|checkup|check-up|cleanliness/.test(q))return data?.practical?.hygiene||"Mamtu states that she takes hygiene seriously.";
+    if(/face verification|verify face|real photos|genuine photos|photographs genuine/.test(q))return data?.practical?.photographs||"Mamtu states that her public photographs are genuine and face verification is handled privately.";
+    if(/hotel|oyo|outcall location|five[- ]star|5[- ]star/.test(q))return (data?.practical?.standards||[]).filter(x=>/hotel|OYO|outcall/i.test(x)).join(" ")||"Outcalls are limited to five-star hotels.";
+    if(/minimum engagement|minimum time|two hours|2 hours/.test(q))return (data?.practical?.standards||[]).find(x=>/Minimum engagement/i.test(x))||"Minimum engagement is generally two hours.";
     if(/price|pricing|rate|cost|how much|fee/.test(q))return "Exact pricing is not published on the website. Please ask Mamtu directly through WhatsApp or Telegram for current details.";
     if(/available|availability|today|tonight|tomorrow/.test(q))return "Live availability is not published or guaranteed by the website. Mamtu confirms current availability herself through her official contact channels.";
     if(/whatsapp|phone|number/.test(q))return "Mamtu’s official WhatsApp is "+c.whatsappDisplay+".";
