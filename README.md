@@ -1,41 +1,33 @@
-# MAMTU — Personal Profile Website
+# MAMTU — Multi-page Personal Profile Website
 
-Live website: https://mamtu.mohit-datascientist108.workers.dev/
+Live site: https://mamtu.mohit-datascientist108.workers.dev/
 
-GitHub's main branch deploys automatically to Cloudflare Workers. This is a responsive, real-media editorial site with a three-part homepage carousel, an eight-photo gallery, three playable videos, personal profile, privacy information, and the official Telegram link.
+GitHub's `main` branch automatically deploys to Cloudflare Workers.
 
-## Real media (already uploaded)
+## Pages and navigation
 
-- Images: assets/images/1.jpeg through assets/images/8.jpeg
-- Videos: assets/videos/1.mp4, assets/videos/2.mp4, assets/videos/3.mp4
-- Homepage order: **6.jpeg → 3.jpeg → 1.mp4** (6 seconds per photo, 11 seconds for film)
-- The photo gallery uses all eight images; the film section uses all three videos.
+- `index.html` — simple homepage, featuring images **6** and **3** and video **1** together at the top; full-media display without cropping.
+- `about.html` — personal story and photographs 7 and 8.
+- `gallery.html` — all eight photographs in an uncropped masonry gallery with fullscreen lightbox.
+- `videos.html` — all three original videos, playable separately.
+- `details.html` — personal information, broad location, privacy and communication.
+- `contact.html` — Telegram link @mistressmamtu, without a dummy form.
 
-The media file order, paths, captions, and timing are in **media.js**, which is the only media manifest. Images and clips are reused where beneficial. Replace any media only with the subject's permission.
+Shared styling is in `atelier.css`; shared interactions (mobile navigation, accessible photo lightbox, video focus) are in `atelier.js`. `media.js` remains as the original numbered-media inventory but the pages now include their real assets directly in HTML.
 
-## Editing
+## Media
 
-- index.html — page layout and owner-supplied non-explicit biography, Telegram handle, privacy wording
-- atelier.css — visual design and mobile layouts
-- atelier.js — video slideshow, gallery viewer, keyboard navigation, mobile menu
-- media.js — change image/video order, timing, captions
-- assets/images — numbered photos, which are public
-- assets/videos — numbered MP4s, which are public
-- wrangler.jsonc — Cloudflare Workers static asset configuration
-- tests/smoke.cjs and tests/browser.cjs — source and live-browser checks
+- Images: `assets/images/1.jpeg` through `assets/images/8.jpeg`
+- Videos: `assets/videos/1.mp4` through `assets/videos/3.mp4`
 
-The homepage video plays muted; other videos require the visitor to press Play. The hero can be paused, and respects reduced-motion preferences. The site collects no contact-form data, has no analytics, and uses the provided official Telegram handle.
+**IMPORTANT:** Featured images on the homepage and video/photo viewers use `object-fit: contain`, not `cover`, so portrait photos are displayed fully rather than cropped. The gallery also retains each photograph's natural aspect ratio.
 
-## Privacy and publishing
+## Testing and deployment
 
-The exact private residential location is deliberately not displayed. The profile says Saket, New Delhi. Owner/subject authorization, age verification, regulatory compliance and permission to publish each photo/video should be confirmed outside this repository.
+Run `npm test` for source-level smoke checks (file existence, six-page routing, visible hero media, privacy, responsive styling). `tests/browser.cjs` contains live Playwright checks for desktop/mobile, gallery interaction and media visibility, when the CI runner has Playwright installed.
 
-The temporary workers.dev address remains **noindex** (robots.txt and meta tag). Before publishing on a permanent domain, obtain the subject's consent, review local rules and complete legal/privacy disclosures. Do not store private IDs, addresses or credentials in this public GitHub repository.
+The Cloudflare configuration is `wrangler.jsonc`. Updates pushed to main trigger automatic deployment. Leave `noindex,nofollow` on the temporary workers.dev preview until the subject has reviewed the whole site and consented to public launch.
 
-## Testing
+## Privacy
 
-Run `npm test` for smoke tests. The GitHub Actions browser workflow tests the deployed site using Chromium (desktop and mobile), including slide order, three films, image gallery, navigation and the Telegram link.
-
-## Deployment
-
-Changes committed to main automatically start a Cloudflare build. No manual deployment command or Cloudflare API key is required for ordinary updates.
+Do not publish the subject's exact private address, identity documents, or credentials. Check authorization and adult age of subjects, consent for every image/video, and applicable local rules before promotion. The published pages list Saket, New Delhi only.
