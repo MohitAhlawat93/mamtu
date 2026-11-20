@@ -2,11 +2,59 @@
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#650c2a"><meta name="robots" content="noindex,nofollow">
-<meta name="description" content="Browse Mamtu's personal photo collection.">
+<meta name="description" content="Browse Mamtu's personal photo collection — a growing gallery of genuine photographs from Saket, New Delhi.">
 <title>Gallery | Mamtu — New Delhi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/atelier.css?v=editorial-20261120-v3"><link rel="stylesheet" href="/assistant.css?v=rag-20261120-v3"><script src="/atelier.js?v=editorial-20261120-v3" defer></script><script src="/assistant.js?v=rag-20261120-v3" defer></script></head>
+<link rel="stylesheet" href="/atelier.css?v=editorial-20261120-v6"><link rel="stylesheet" href="/assistant.css?v=rag-20261120-v6"><script src="/atelier.js?v=editorial-20261120-v6" defer></script><script src="/assistant.js?v=rag-20261120-v6" defer></script>
+<style>
+/* Premium image-first gallery */
+.gallery-hero{padding:clamp(2.5rem,6vw,4.5rem) var(--gutter) 1.5rem;display:grid;grid-template-columns:1.2fr .8fr;gap:3rem;align-items:end}
+@media(max-width:800px){.gallery-hero{grid-template-columns:1fr;gap:1.25rem}}
+.gallery-hero h1{font-size:clamp(2.6rem,6vw,4.2rem);line-height:1.05;margin:.35rem 0 0}
+.gallery-hero .lede{max-width:38ch;color:var(--muted);line-height:1.65;font-size:1.02rem}
+.gallery-meta{display:flex;flex-wrap:wrap;gap:1.5rem;padding:0 var(--gutter) 2.5rem;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+.gallery-meta span{display:inline-flex;align-items:center;gap:.4rem}
+.gallery-meta span:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--wine);opacity:.55}
+
+/* Masonry-style asymmetric grid */
+.masonry{padding:0 var(--gutter) 4rem;column-count:3;column-gap:1.1rem}
+@media(max-width:960px){.masonry{column-count:2}}
+@media(max-width:560px){.masonry{column-count:1}}
+.masonry-item{break-inside:avoid;margin-bottom:1.1rem;position:relative;border-radius:10px;overflow:hidden;background:#e8dad6;cursor:pointer}
+.masonry-item button{display:block;width:100%;padding:0;border:0;background:none;position:relative}
+.masonry-item img{width:100%;height:auto;display:block;transition:transform .55s cubic-bezier(.2,.7,.2,1),filter .4s ease}
+.masonry-item:hover img{transform:scale(1.04);filter:brightness(.92)}
+.masonry-item .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(37,10,24,.45) 0%,transparent 45%);opacity:0;transition:opacity .35s ease;display:flex;align-items:flex-end;justify-content:space-between;padding:1rem 1.1rem;pointer-events:none}
+.masonry-item:hover .overlay{opacity:1}
+.masonry-item .overlay span{color:#fff;font-size:.72rem;letter-spacing:.12em;font-weight:600;text-transform:uppercase}
+.masonry-item .num{font-variant-numeric:tabular-nums;opacity:.85}
+
+/* Featured wide row for variety */
+.gallery-featured{padding:0 var(--gutter) 1.1rem;display:grid;grid-template-columns:1.4fr 1fr;gap:1.1rem}
+@media(max-width:800px){.gallery-featured{grid-template-columns:1fr}}
+.gallery-featured .masonry-item{margin:0}
+.gallery-featured img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+.gallery-featured .tall img{aspect-ratio:3/4}
+
+/* Closing strip */
+.gallery-close{padding:3rem var(--gutter) 4rem;text-align:center;max-width:520px;margin:0 auto}
+.gallery-close blockquote{font-family:"Playfair Display",Georgia,serif;font-size:1.35rem;line-height:1.45;color:var(--ink);margin-bottom:1.25rem}
+.gallery-close .eyebrow{margin-bottom:.75rem}
+
+/* Cleaner lightbox */
+.lightbox{border:0;padding:0;max-width:min(92vw,980px);width:100%;background:transparent;color:#fff}
+.lightbox::backdrop{background:rgba(20,8,14,.92);backdrop-filter:blur(8px)}
+.lightbox-inner{position:relative;display:flex;flex-direction:column;align-items:center}
+.lightbox img{max-height:82vh;width:auto;max-width:100%;border-radius:6px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.lightbox-bar{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:min(92vw,980px);padding:1rem 0 .25rem;gap:1rem}
+.lightbox-bar .count{font-size:.8rem;letter-spacing:.14em;font-weight:600;opacity:.8}
+.lightbox-bar .nav-btns{display:flex;gap:.5rem}
+.lightbox-bar button,.lightbox-close{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:1.1rem;transition:background .2s}
+.lightbox-bar button:hover,.lightbox-close:hover{background:rgba(255,255,255,.22)}
+.lightbox-close{position:absolute;top:-8px;right:0;z-index:2;font-size:1.4rem;line-height:1}
+</style>
+</head>
 <body><a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
 <a class="brand" href="/index.html" aria-label="Mamtu home"><img class="brand-mark" src="/assets/mark.svg" alt="">MAMTU<span>.</span></a>
@@ -14,24 +62,105 @@
 <a class="header-contact" href="https://wa.me/918368410417" target="_blank" rel="noopener noreferrer">WHATSAPP <span aria-hidden="true">↗</span></a>
 <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav"><span></span><span></span><span></span></button>
 </header>
-<nav id="mobileNav" class="mobile-nav" aria-label="Mobile navigation" hidden><a href="/index.html">Home</a><a href="/about.html">About</a><a href="/gallery.html" aria-current="page">Gallery</a><a href="/videos.html">Videos</a><a href="/services.html">Services</a><a href="/reviews.html">Reviews</a><a href="/details.html">Details</a><a href="/contact.html">Contact</a><div class="mobile-contact-links"><a href="https://wa.me/918368410417" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a><a href="https://t.me/mistressmamtu" target="_blank" rel="noopener noreferrer">Telegram ↗</a></div></nav>
+<nav id="mobileNav" class="mobile-nav" aria-label="Mobile navigation" hidden>
+<a href="/index.html">Home</a><a href="/about.html">About</a><a href="/gallery.html" aria-current="page">Gallery</a><a href="/videos.html">Videos</a><a href="/services.html">Services</a><a href="/reviews.html">Reviews</a><a href="/details.html">Details</a><a href="/contact.html">Contact</a>
+<div class="mobile-contact-links"><a href="https://wa.me/918368410417" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a><a href="https://t.me/mistressmamtu" target="_blank" rel="noopener noreferrer">Telegram ↗</a></div>
+</nav>
+
 <main id="main">
-<section class="page-title-section"><div><p class="eyebrow">PHOTO JOURNAL</p><h1>The <em>gallery.</em></h1><p class="page-lede">A growing collection of photographs, moods and little stories. New images can be added here without changing the way the page introduces the collection.</p></div><div class="title-aside">A GROWING COLLECTION<br>STORIES & DETAILS</div></section>
-<section class="gallery-opening" aria-labelledby="galleryIntro"><div><p class="eyebrow">MORE THAN A PORTRAIT</p><h2 id="galleryIntro">Every picture has<br><em>something to say.</em></h2></div><p>From an airport selfie and everyday denim to a signature black look and delicate traditional embroidery, the collection captures different sides of Mamtu. The notes are editorial impressions of what appears in each image, not invented dates or events.</p></section>
-<section class="gallery-section" aria-label="Photographs with individual stories"><div class="gallery-grid">
-<article class="story-card"><button class="gallery-card" type="button" data-photo-index="0" aria-label="View The signature frame"><img src="/assets/images/6.jpeg" alt="Mamtu wearing a black zip-front outfit in a mirror selfie" fetchpriority="high" decoding="async"><span>VIEW FULL IMAGE <span aria-hidden="true">↗</span></span></button><div class="story-card-text"><p class="story-kicker">MIRROR PORTRAIT · SIGNATURE LOOK</p><h2>The signature frame</h2><p class="story-description">A sleek black look, a mirror, and a pose that feels completely self-assured. This frame is all about quiet confidence and the details that make a simple outfit memorable.</p></div></article>
-<article class="story-card"><button class="gallery-card" type="button" data-photo-index="1" aria-label="View A different angle"><img src="/assets/images/3.jpeg" alt="Mamtu posing for a tilted mirror selfie in a black outfit" fetchpriority="high" decoding="async"><span>VIEW FULL IMAGE <span aria-hidden="true">↗</span></span></button><div class="story-card-text"><p class="story-kicker">PLAYFUL · PERSPECTIVE</p><h2>A different angle</h2><p class="story-description">A tilted mirror changes the whole mood. The relaxed pose and bold black outfit turn an everyday reflection into a playful little portrait.</p></div></article>
-<article class="story-card"><button class="gallery-card" type="button" data-photo-index="2" aria-label="View Between destinations"><img src="/assets/images/1.jpeg" alt="Mamtu in a red top taking a selfie in an airport terminal" loading="lazy" decoding="async"><span>VIEW FULL IMAGE <span aria-hidden="true">↗</span></span></button><div class="story-card-text"><p class="story-kicker">TRAVEL · EVERYDAY</p><h2>Between destinations</h2><p class="story-description">Airport lights, a bright red top and a quick selfie before whatever comes next. A more everyday side of the collection, full of movement and possibility.</p></div></article>
-<article class="story-card"><button class="gallery-card" type="button" data-photo-index="3" aria-label="View The candid reflection"><img src="/assets/images/2.jpeg" alt="Mamtu wearing a white top in a casual mirror selfie" loading="lazy" decoding="async"><span>VIEW FULL IMAGE <span aria-hidden="true">↗</span></span></button><div class="story-card-text"><p class="story-kicker">LITTLE MOMENTS · CANDID</p><h2>The candid reflection</h2><p class="story-description">A white top, a mirror and the bustle of people in the background. It feels like one of those unplanned snapshots worth keeping.</p></div></article>
-<article class="story-card"><button class="gallery-card" type="button" data-photo-index="4" aria-label="View Denim and attitude"><img src="/assets/images/4.jpeg" alt="Mamtu in a black crop top and light blue jeans taking a mirror photograph" loading="lazy" decoding="async"><span>VIEW FULL IMAGE <span aria-hidden="true">↗</span></span></button><div class="story-card-text"><p class="story-kicker">CASUAL · STYLE</p><h2>Denim & attitude</h2><p class="story-description">Black and denim, a side-on pose and a little attitude. This portrait lets an everyday outfit do the talking.</p></div></article>
-<article class="story-card"><button class="gallery-card" type="button" data-photo-index="5" aria-label="View One more glance"><img src="/assets/images/5.jpeg" alt="Mamtu posing in a black crop top and light denim jeans in a mirror shot" loading="lazy" decoding="async"><span>VIEW FULL IMAGE <span aria-hidden="true">↗</span></span></button><div class="story-card-text"><p class="story-kicker">DETAILS · REFLECTION</p><h2>One more glance</h2><p class="story-description">Taken in a similar setting, this second denim portrait shifts the focus to smaller things: an angle, a bracelet, and a different expression.</p></div></article>
-<article class="story-card"><button class="gallery-card" type="button" data-photo-index="6" aria-label="View Four ways to be me"><img src="/assets/images/7.jpeg" alt="Four-image collage of Mamtu in a black outfit" loading="lazy" decoding="async"><span>VIEW FULL IMAGE <span aria-hidden="true">↗</span></span></button><div class="story-card-text"><p class="story-kicker">COLLAGE · DIFFERENT ANGLES</p><h2>Four ways to be me</h2><p class="story-description">Several photographs come together in one collage. A change of pose and perspective creates distinct impressions of the same signature look.</p></div></article>
-<article class="story-card"><button class="gallery-card" type="button" data-photo-index="7" aria-label="View A softer side"><img src="/assets/images/8.jpeg" alt="Close-up of Mamtu in an embroidered lavender traditional outfit with jewellery and henna" loading="lazy" decoding="async"><span>VIEW FULL IMAGE <span aria-hidden="true">↗</span></span></button><div class="story-card-text"><p class="story-kicker">TRADITIONAL · DETAIL</p><h2>A softer side</h2><p class="story-description">Lavender embroidery, jewellery and delicate henna details give this portrait a different kind of elegance. A gentle contrast to the bolder black-and-denim frames.</p></div></article>
-</div></section>
-<section class="gallery-closing"><p class="eyebrow">A NOTE ABOUT THE COLLECTION</p><blockquote>“A photograph can catch a look. A growing gallery gets a little closer to a personality.”</blockquote><a class="text-link" href="/about.html">Get to know me ↗</a></section>
-<dialog id="lightbox" class="lightbox" aria-label="Image and its story"><button id="lightboxClose" class="lightbox-close" type="button" aria-label="Close image viewer">×</button><img id="lightboxImage" alt=""><div class="lightbox-story"><span class="lightbox-eyebrow" id="lightboxKicker"></span><strong id="lightboxTitle"></strong><p id="lightboxDescription"></p></div><div class="lightbox-controls"><div><button id="lightboxPrev" type="button" aria-label="Previous image">←</button><button id="lightboxNext" type="button" aria-label="Next image">→</button></div></div></dialog>
+<section class="gallery-hero">
+<div>
+<p class="eyebrow">PHOTO COLLECTION</p>
+<h1>The <em>gallery.</em></h1>
+</div>
+<p class="lede">A personal collection of genuine photographs. Different moods, outfits and moments — presented simply, without clutter.</p>
+</section>
+
+<div class="gallery-meta">
+<span>8 photographs</span>
+<span>Genuine images</span>
+<span>Growing collection</span>
+</div>
+
+<!-- Featured top row for visual rhythm -->
+<section class="gallery-featured" aria-label="Featured photographs">
+<article class="masonry-item">
+<button type="button" data-photo-index="0" aria-label="View photograph 1">
+<img src="/assets/images/6.jpeg" alt="Mamtu in a black zip-front outfit" fetchpriority="high" decoding="async">
+<span class="overlay"><span class="num">01</span><span>View</span></span>
+</button>
+</article>
+<article class="masonry-item tall">
+<button type="button" data-photo-index="1" aria-label="View photograph 2">
+<img src="/assets/images/3.jpeg" alt="Mamtu in an angled mirror portrait" decoding="async">
+<span class="overlay"><span class="num">02</span><span>View</span></span>
+</button>
+</article>
+</section>
+
+<!-- Main masonry grid -->
+<section class="masonry" aria-label="Photo gallery">
+<article class="masonry-item">
+<button type="button" data-photo-index="2" aria-label="View photograph 3">
+<img src="/assets/images/1.jpeg" alt="Mamtu in a red top" loading="lazy" decoding="async">
+<span class="overlay"><span class="num">03</span><span>View</span></span>
+</button>
+</article>
+<article class="masonry-item">
+<button type="button" data-photo-index="3" aria-label="View photograph 4">
+<img src="/assets/images/2.jpeg" alt="Mamtu in a white top" loading="lazy" decoding="async">
+<span class="overlay"><span class="num">04</span><span>View</span></span>
+</button>
+</article>
+<article class="masonry-item">
+<button type="button" data-photo-index="4" aria-label="View photograph 5">
+<img src="/assets/images/4.jpeg" alt="Mamtu in black and denim" loading="lazy" decoding="async">
+<span class="overlay"><span class="num">05</span><span>View</span></span>
+</button>
+</article>
+<article class="masonry-item">
+<button type="button" data-photo-index="5" aria-label="View photograph 6">
+<img src="/assets/images/5.jpeg" alt="Mamtu in denim look" loading="lazy" decoding="async">
+<span class="overlay"><span class="num">06</span><span>View</span></span>
+</button>
+</article>
+<article class="masonry-item">
+<button type="button" data-photo-index="6" aria-label="View photograph 7">
+<img src="/assets/images/7.jpeg" alt="Mamtu collage of poses" loading="lazy" decoding="async">
+<span class="overlay"><span class="num">07</span><span>View</span></span>
+</button>
+</article>
+<article class="masonry-item">
+<button type="button" data-photo-index="7" aria-label="View photograph 8">
+<img src="/assets/images/8.jpeg" alt="Mamtu in traditional lavender look" loading="lazy" decoding="async">
+<span class="overlay"><span class="num">08</span><span>View</span></span>
+</button>
+</article>
+</section>
+
+<section class="gallery-close">
+<p class="eyebrow">A NOTE</p>
+<blockquote>“A photograph can catch a look. A growing gallery gets a little closer to a personality.”</blockquote>
+<a class="text-link" href="/about.html">Get to know me ↗</a>
+</section>
+
+<dialog id="lightbox" class="lightbox" aria-label="Full size photograph">
+<div class="lightbox-inner">
+<button id="lightboxClose" class="lightbox-close" type="button" aria-label="Close">×</button>
+<img id="lightboxImage" alt="">
+<div class="lightbox-bar">
+<span class="count" id="lightboxCount">01 / 08</span>
+<div class="nav-btns">
+<button id="lightboxPrev" type="button" aria-label="Previous">←</button>
+<button id="lightboxNext" type="button" aria-label="Next">→</button>
+</div>
+</div>
+</div>
+</dialog>
+
 <div class="page-next"><span>SEE MORE OF MY WORLD</span><a class="text-link" href="/videos.html">Watch my videos ↗</a></div>
 </main>
+
 <footer class="site-footer">
 <div class="footer-brand-block"><a class="brand footer-brand" href="/index.html"><img class="brand-mark" src="/assets/mark.svg" alt="">MAMTU<span>.</span></a><p>Personal profile · Saket, New Delhi<br>Playful energy. Privacy. Respect.</p></div>
 <nav class="footer-links" aria-label="Footer navigation"><a href="/about.html">About</a><a href="/gallery.html">Gallery</a><a href="/videos.html">Videos</a><a href="/services.html">Services</a><a href="/reviews.html">Reviews</a><a href="/details.html">Details</a><a href="/contact.html">Contact</a></nav>
