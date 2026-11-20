@@ -1,272 +1,155 @@
 "use strict";
-/* MAMTU cinematic edition — static preview with explicit media configuration. */
 (() => {
-  const $ = (id) => document.getElementById(id);
-  const media = window.MAMTU_MEDIA || {};
-  const gallery = Array.isArray(media.slides) ? media.slides.filter((item) => item && typeof item.src === "string" && item.src.startsWith("/assets/images/")) : [];
-  const slideshow = [];
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const durationImage = Math.max(3000, Number(media.imageDurationMs) || 6000);
-  const durationVideo = Math.max(6000, Number(media.videoDurationMs) || 12000);
-  let current = 0, timer = null, paused = reducedMotion.matches, progressStart = 0;
-  let lightboxIndex = 0, lightboxPreviousFocus = null;
-
+  const $ = id => document.getElementById(id);
+  const config = window.MAMTU_MEDIA || {};
+  const hero = Array.isArray(config.hero) ? config.hero : [];
+  const gallery = Array.isArray(config.gallery) ? config.gallery : [];
+  const films = Array.isArray(config.films) ? config.films : [];
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const durationImage = Math.max(3000, Number(config.imageDurationMs) || 6000);
+  const durationVideo = Math.max(6000, Number(config.videoDurationMs) || 11000);
+  let current = 0, timer = null, paused = reduced, focusBeforeDialog = null, photoIndex = 0;
+  const slides = [];
   $("currentYear").textContent = String(new Date().getFullYear());
 
-  // Mobile navigation: state is visible, semantic and keyboard-friendly.
-  const menu = $("menuToggle"), mobileNav = $("mobileNav");
+  const toggle = $("menuToggle"), mobileNav = $("mobileNav");
   function setMenu(open) {
     mobileNav.hidden = !open;
-    menu.setAttribute("aria-expanded", String(open));
-    menu.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
   }
-  menu.addEventListener("click", () => setMenu(mobileNav.hidden));
-  mobileNav.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setMenu(false)));
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
+  toggle.addEventListener("click", () => setMenu(mobileNav.hidden));
+  mobileNav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => setMenu(false)));
+  document.addEventListener("keydown", event => { if (event.key === "Escape") setMenu(false); });
 
-  // The image gallery uses the same manifest as the homepage. No duplicate photo paths.
-  const lookbook = $("lookbookGrid");
+  // Eight real photos, with a keyboard-friendly enlarged viewer.
   gallery.forEach((item, i) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "lookbook-card";
-    button.setAttribute("aria-label", "View image " + (i + 1) + ": " + item.title);
-    const figure = document.createElement("figure");
-    figure.style.margin = "0";
-    figure.style.height = "100%";
-    const image = document.createElement("img");
-    image.src = item.src;
-    image.alt = item.alt || ("MAMTU study " + (i + 1));
-    image.loading = i < 2 ? "eager" : "lazy";
-    image.decoding = "async";
-    const category = document.createElement("span");
-    category.className = "card-top";
-    category.textContent = item.tag || ("FRAME / " + String(i + 1).padStart(2, "0"));
-    const caption = document.createElement("figcaption");
-    const title = document.createElement("b");
-    title.textContent = item.title || ("Frame " + (i + 1));
-    const number = document.createElement("span");
-    number.textContent = String(i + 1).padStart(2, "0") + " / " + String(gallery.length).padStart(2, "0");
-    caption.append(title, number);
-    figure.append(image, category, caption);
-    button.append(figure);
-    button.addEventListener("click", () => openLightbox(i));
-    lookbook.append(button);
+    const button = document.createElement("button"); button.type = "button"; button.className = "lookbook-card";
+    button.setAttribute("aria-label", "Open " + (item.title || "photo") + ", image " + (i + 1));
+    const img = document.createElement("img");
+    img.src = item.src; img.alt = item.alt || ("Mamtu photograph " + (i + 1));
+    img.loading = i < 2 ? "eager" : "lazy"; img.decoding = "async";
+    const cap = document.createElement("figcaption");
+    const label = document.createElement("b"); label.textContent = item.title || "Mamtu";
+    const count = document.createElement("span");
+    count.textContent = String(i + 1).padStart(2, "0") + " / " + String(gallery.length).padStart(2, "0");
+    cap.append(label, count); button.append(img, cap);
+    button.addEventListener("click", () => openPhoto(i));
+    $("lookbookGrid").append(button);
   });
-
-  // Accessible gallery lightbox.
-  const lightbox = $("lightbox");
-  function paintLightbox() {
-    const item = gallery[lightboxIndex];
-    if (!item) return;
-    $("lightboxImage").src = item.src;
-    $("lightboxImage").alt = item.alt || item.title;
-    $("lightboxTitle").textContent = item.title + "  —  " + String(lightboxIndex + 1).padStart(2, "0") + " / " + String(gallery.length).padStart(2, "0");
+  const dialog = $("lightbox");
+  function paintPhoto() {
+    const item = gallery[photoIndex]; if (!item) return;
+    $("lightboxImage").src = item.src; $("lightboxImage").alt = item.alt || item.title;
+    $("lightboxTitle").textContent = item.title + " — " + (photoIndex + 1) + " / " + gallery.length;
   }
-  function openLightbox(index) {
-    lightboxIndex = index;
-    lightboxPreviousFocus = document.activeElement;
-    paintLightbox();
-    lightbox.showModal();
+  function openPhoto(index) {
+    photoIndex = index; focusBeforeDialog = document.activeElement;
+    paintPhoto(); dialog.showModal();
   }
-  function moveLightbox(diff) {
+  function movePhoto(delta) {
     if (!gallery.length) return;
-    lightboxIndex = (lightboxIndex + diff + gallery.length) % gallery.length;
-    paintLightbox();
+    photoIndex = (photoIndex + delta + gallery.length) % gallery.length; paintPhoto();
   }
-  $("lightboxPrev").addEventListener("click", () => moveLightbox(-1));
-  $("lightboxNext").addEventListener("click", () => moveLightbox(1));
-  $("lightboxClose").addEventListener("click", () => lightbox.close());
-  lightbox.addEventListener("close", () => lightboxPreviousFocus?.focus?.());
-  lightbox.addEventListener("click", (event) => { if (event.target === lightbox) lightbox.close(); });
-  document.addEventListener("keydown", (event) => {
-    if (!lightbox.open) return;
-    if (event.key === "ArrowRight") moveLightbox(1);
-    if (event.key === "ArrowLeft") moveLightbox(-1);
+  $("lightboxPrev").addEventListener("click", () => movePhoto(-1));
+  $("lightboxNext").addEventListener("click", () => movePhoto(1));
+  $("lightboxClose").addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", event => { if (event.target === dialog) dialog.close(); });
+  dialog.addEventListener("close", () => focusBeforeDialog && focusBeforeDialog.focus());
+  document.addEventListener("keydown", event => {
+    if (!dialog.open) return;
+    if (event.key === "ArrowRight") movePhoto(1);
+    if (event.key === "ArrowLeft") movePhoto(-1);
   });
 
-  // The full-bleed hero is a timed slideshow, optionally led by an approved video.
-  // No video is requested until the media manifest supplies a path.
-  function createSlide(item, type) {
-    const slide = document.createElement("div");
-    slide.className = "hero-slide";
-    slide.dataset.kind = type;
-    if (type === "video") {
-      const v = document.createElement("video");
-      v.muted = true; v.autoplay = true; v.loop = true; v.playsInline = true;
-      v.preload = "metadata"; v.poster = media.videoPoster || gallery[0]?.src || "";
-      v.setAttribute("aria-label", "MAMTU featured homepage film");
-      v.src = item.src;
-      slide.append(v);
+  // Hero playlist: 6.jpeg, 3.jpeg, and then 1.mp4 (from media.js).
+  hero.forEach((item, i) => {
+    const videoMode = item.type === "video";
+    const node = document.createElement("div"); node.className = "hero-slide"; node.dataset.kind = item.type;
+    let movie = null;
+    if (videoMode) {
+      movie = document.createElement("video");
+      movie.src = item.src; movie.poster = item.poster || "/assets/images/6.jpeg";
+      movie.muted = true; movie.loop = true; movie.playsInline = true;
+      movie.preload = "metadata"; movie.setAttribute("aria-label", item.alt || "Mamtu film");
+      movie.addEventListener("error", () => { node.classList.add("video-fallback"); });
+      node.append(movie);
     } else {
       const img = document.createElement("img");
-      img.src = item.src;
-      img.alt = item.alt || "Original MAMTU editorial art";
-      img.loading = slideshow.length === 0 ? "eager" : "lazy";
-      img.decoding = "async";
-      if (!slideshow.length) img.fetchPriority = "high";
-      slide.append(img);
+      img.src = item.src; img.alt = item.alt || "Mamtu photograph";
+      img.loading = i === 0 ? "eager" : "lazy"; img.decoding = "async";
+      if (i === 0) img.fetchPriority = "high";
+      node.append(img);
     }
-    $("heroMedia").append(slide);
-    return { type, item, node: slide };
-  }
-
-  function stopTimer() {
-    clearTimeout(timer); timer = null;
-    const progress = $("heroProgress");
-    progress.style.transition = "none";
-    if (progressStart) progress.style.width = "0%";
-  }
-  function resetProgress(delay) {
-    const progress = $("heroProgress");
-    progress.style.transition = "none";
-    progress.style.width = "0%";
-    progress.offsetWidth;
-    progress.style.transition = "width " + delay + "ms linear";
-    progress.style.width = "100%";
-    progressStart = Date.now();
-  }
-  function populateThumbnails() {
-    const dock = $("heroThumbnails");
-    dock.replaceChildren();
-    slideshow.slice(0, 4).forEach((slide, index) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "thumb";
-      button.setAttribute("aria-label", "Show " + (slide.item.title || "film"));
-      if (slide.type === "image") {
-        const img = document.createElement("img");
-        img.src = slide.item.src;
-        img.alt = "";
-        img.loading = "lazy";
-        button.append(img);
-      } else {
-        button.textContent = "▶";
-      }
-      button.addEventListener("click", () => showSlide(index));
-      dock.append(button);
-    });
-  }
+    $("heroMedia").append(node); slides.push({item:item, node:node, movie:movie});
+    const thumb = document.createElement("button");
+    thumb.type = "button"; thumb.className = "thumb";
+    thumb.setAttribute("aria-label", "Show " + (item.title || "slide"));
+    const image = document.createElement("img");
+    image.src = videoMode ? item.poster : item.src; image.alt = ""; image.loading = "lazy";
+    thumb.append(image);
+    if (videoMode) {
+      const symbol = document.createElement("span"); symbol.className = "thumb-play";
+      symbol.textContent = "▶"; thumb.append(symbol);
+    }
+    thumb.addEventListener("click", () => showSlide(i));
+    $("heroThumbnails").append(thumb);
+  });
   function showSlide(index) {
-    if (!slideshow.length) return;
-    clearTimeout(timer); timer = null;
-    current = (index + slideshow.length) % slideshow.length;
-    slideshow.forEach((entry, i) => {
-      entry.node.classList.toggle("is-active", i === current);
-      if (entry.type === "video") {
-        const video = entry.node.querySelector("video");
-        if (i !== current || paused || reducedMotion.matches) video.pause();
-        else video.play().catch(() => {});
+    if (!slides.length) return;
+    clearTimeout(timer); timer = null; current = (index + slides.length) % slides.length;
+    slides.forEach((s, i) => {
+      s.node.classList.toggle("is-active", i === current);
+      if (s.movie) {
+        if (i !== current || paused || reduced || document.hidden) s.movie.pause();
+        else { s.movie.currentTime = 0; s.movie.play().catch(() => {}); }
       }
     });
-    const entry = slideshow[current];
-    $("heroCaption").textContent = entry.item.title || "MAMTU in motion";
+    const item = slides[current].item;
+    $("heroCaption").textContent = item.title || "Mamtu";
     $("heroIndex").textContent = String(current + 1).padStart(2, "0");
-    $("heroTotal").textContent = "/ " + String(slideshow.length).padStart(2, "0");
-    [...$("heroThumbnails").children].forEach((el, i) => {
-      el.classList.toggle("is-active", i === current);
-      if (i === current) el.setAttribute("aria-current", "true"); else el.removeAttribute("aria-current");
+    $("heroTotal").textContent = "/ " + String(slides.length).padStart(2, "0");
+    [...$("heroThumbnails").children].forEach((node, i) => {
+      node.classList.toggle("is-active", i === current);
+      if (i === current) node.setAttribute("aria-current", "true"); else node.removeAttribute("aria-current");
     });
-    const duration = entry.type === "video" ? durationVideo : durationImage;
-    stopTimer();
-    if (!paused && !document.hidden && !reducedMotion.matches) {
-      resetProgress(duration);
-      timer = setTimeout(() => showSlide(current + 1), duration);
+    const bar = $("heroProgress"), delay = item.type === "video" ? durationVideo : durationImage;
+    bar.style.transition = "none"; bar.style.width = "0%";
+    if (!paused && !reduced && !document.hidden) {
+      bar.getBoundingClientRect();
+      bar.style.transition = "width " + delay + "ms linear"; bar.style.width = "100%";
+      timer = setTimeout(() => showSlide(current + 1), delay);
     }
   }
   $("heroPrev").addEventListener("click", () => showSlide(current - 1));
   $("heroNext").addEventListener("click", () => showSlide(current + 1));
-  $("heroPause").addEventListener("click", () => {
-    paused = !paused;
+  function syncPause() {
+    $("heroPause").textContent = paused ? "▶" : "Ⅱ";
     $("heroPause").setAttribute("aria-pressed", String(paused));
     $("heroPause").setAttribute("aria-label", paused ? "Resume slideshow" : "Pause slideshow");
-    $("heroPause").textContent = paused ? "▶" : "Ⅱ";
-    showSlide(current);
-  });
-  if (paused) {
-    $("heroPause").textContent = "▶";
-    $("heroPause").setAttribute("aria-pressed", "true");
-    $("heroPause").setAttribute("aria-label", "Resume slideshow");
   }
+  $("heroPause").addEventListener("click", () => { paused = !paused; syncPause(); showSlide(current); });
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      clearTimeout(timer);
-      slideshow.forEach((entry) => entry.node.querySelector("video")?.pause());
-    } else showSlide(current);
+    if (document.hidden) { clearTimeout(timer); slides.forEach(s => { if (s.movie) s.movie.pause(); }); }
+    else showSlide(current);
   });
-  // A user may add a video to assets/videos/hero.mp4 then configure it in media.js.
-  async function initializeMedia() {
-    let verifiedVideo = "";
-    if (typeof media.heroVideo === "string" && /^\/assets\/videos\/[\w.-]+\.mp4$/i.test(media.heroVideo)) {
-      try {
-        const result = await fetch(media.heroVideo, { method: "HEAD", cache: "no-store" });
-        if (result.ok && /video\/|octet-stream/i.test(result.headers.get("content-type") || "")) verifiedVideo = media.heroVideo;
-      } catch { /* Offline or missing media: keep images visible. */ }
-    }
-    if (verifiedVideo) slideshow.push(createSlide({ src: verifiedVideo, title: "The moving portrait" }, "video"));
-    gallery.forEach((item) => slideshow.push(createSlide(item, "image")));
-    if (!slideshow.length) {
-      $("heroCaption").textContent = "Media awaiting owner approval";
-      return;
-    }
-    populateThumbnails();
-    showSlide(0);
-    // Film section uses the same verified video, avoiding broken controls before upload.
-    if (verifiedVideo) {
-      const film = $("featureFilm");
-      film.src = verifiedVideo;
-      film.preload = "metadata";
-      film.hidden = false;
-      $("filmWindow").classList.add("has-film");
-    }
-  }
-  initializeMedia();
+  syncPause(); showSlide(0);
 
-  // The enquiry UI never stores data; mailto is enabled only after owner verification.
-  $("contactForm").addEventListener("submit", (event) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    if (!form.reportValidity()) return;
-    const email = typeof media.contactEmail === "string" ? media.contactEmail.trim() : "";
-    const notice = $("formNotice");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      notice.textContent = "Enquiries aren't active yet: the owner needs to confirm a destination email address. No message has been sent or stored.";
-      return;
-    }
-    const data = new FormData(form);
-    const name = String(data.get("name") || "").trim();
-    const reply = String(data.get("email") || "").trim();
-    const message = String(data.get("message") || "").trim();
-    const subject = encodeURIComponent("MAMTU enquiry from " + name);
-    const body = encodeURIComponent("Name: " + name + "\nEmail: " + reply + "\n\n" + message);
-    window.location.href = "mailto:" + email + "?subject=" + subject + "&body=" + body;
-    notice.textContent = "Your email application should open. Review and send the prepared message there; this website does not store submissions.";
+  // Three clips, with controls and no unsolicited audio.
+  const filmPlayers = [];
+  films.forEach((item, i) => {
+    const card = document.createElement("article"); card.className = "film-card";
+    const frame = document.createElement("div"); frame.className = "film-frame";
+    const video = document.createElement("video");
+    video.src = item.src; video.poster = item.poster; video.controls = true; video.playsInline = true;
+    video.preload = "metadata"; video.setAttribute("aria-label", "Mamtu video " + (i + 1));
+    frame.append(video); filmPlayers.push(video);
+    const meta = document.createElement("div"); meta.className = "film-meta";
+    const name = document.createElement("strong"); name.textContent = item.label || "Film";
+    const hint = document.createElement("span"); hint.textContent = "PRESS PLAY TO WATCH";
+    meta.append(name, hint); card.append(frame, meta); $("filmsGrid").append(card);
   });
-
-  // Simple local site FAQ; not falsely described as an AI-powered concierge.
-  const toggle = $("conciergeToggle"), panel = $("conciergePanel");
-  function setGuide(open) {
-    panel.hidden = !open; toggle.setAttribute("aria-expanded", String(open));
-    if (open) $("conciergeQuestion").focus(); else toggle.focus();
-  }
-  toggle.addEventListener("click", () => setGuide(panel.hidden));
-  $("conciergeClose").addEventListener("click", () => setGuide(false));
-  function answer(q) {
-    const text = q.toLowerCase();
-    if (/photo|gallery|image|portrait|picture|media/.test(text)) return "The Gallery includes original abstract placeholders. Once approved photographs are uploaded to GitHub and their paths updated in media.js, they will appear here and in the homepage carousel.";
-    if (/video|film|motion/.test(text)) return "The homepage is video-ready and the Motion section has a film player. An approved MP4 has not yet been uploaded, so the site uses its timed image slideshow.";
-    if (/contact|email|enquir|book|rate|price|availab/.test(text)) return "Contact details and availability are not verified yet. The enquiry form cannot send a message until the owner confirms an email destination.";
-    if (/private|privacy|storage|data/.test(text)) return "This site guide answers using local predefined rules. It sends no data to an AI provider, and the preview enquiry form does not save visitor information.";
-    if (/hello|hi|hey|about|who|story|mamtu/.test(text)) return "Welcome to MAMTU. Explore the introduction and gallery. The personal biography is deliberately left generic until the owner approves it.";
-    return "I can help you find the gallery, the homepage slideshow, the film section and enquiry information. What would you like to explore?";
-  }
-  $("conciergeForm").addEventListener("submit", (event) => {
-    event.preventDefault();
-    const input = $("conciergeQuestion"); const q = input.value.trim();
-    if (!q) return;
-    const log = $("conciergeMessages");
-    const add = (text, user) => { const p = document.createElement("p"); p.className = "concierge-bubble" + (user ? " user" : ""); p.textContent = text; log.append(p); };
-    add(q, true); add(answer(q), false);
-    input.value = ""; log.scrollTop = log.scrollHeight;
-  });
+  filmPlayers.forEach(v => v.addEventListener("play", () => {
+    filmPlayers.forEach(other => { if (other !== v) other.pause(); });
+  }));
 })();
