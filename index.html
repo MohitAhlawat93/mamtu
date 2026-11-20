@@ -1,92 +1,101 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#690e24">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#4a0b22">
   <meta name="robots" content="noindex,nofollow">
-  <meta name="description" content="MAMTU. A visual journal of presence, art and unforgettable moments. Private preview — imagery and details awaiting owner approval.">
-  <title>MAMTU — Moments Made to Stay</title>
+  <meta name="description" content="Meet Mamtu. An independent personal profile in Saket, New Delhi. Discover her story, photograph collection and videos.">
+  <title>Mamtu | Independent Profile · New Delhi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="/assets/images/6.jpeg">
   <link rel="stylesheet" href="/atelier.css">
-  <script src="/media.js" defer></script>
-  <script src="/atelier.js" defer></script>
+  <script src="/media.js" defer></script><script src="/atelier.js" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <header class="site-header" id="top">
-    <a href="#top" class="wordmark" aria-label="MAMTU home">MAMTU<span class="wordmark-stop">.</span></a>
-    <nav class="desktop-nav" aria-label="Main navigation" id="siteNav">
-      <a href="#about">Discover</a><a href="#moments">The gallery</a><a href="#motion">Motion</a><a href="#contact">Contact</a>
+    <a class="wordmark" href="#top" aria-label="Mamtu, homepage">MAMTU<span>.</span></a>
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      <a href="#about">About me</a><a href="#gallery">Gallery</a><a href="#films">Videos</a><a href="#details">Details</a><a href="#contact">Contact</a>
     </nav>
-    <a href="#contact" class="nav-enquiry">A PRIVATE ENQUIRY <span aria-hidden="true">↗</span></a>
+    <a class="nav-enquiry" href="https://t.me/mistressmamtu" target="_blank" rel="noopener noreferrer">TELEGRAM <span aria-hidden="true">↗</span></a>
     <button class="menu-button" id="menuToggle" type="button" aria-controls="mobileNav" aria-expanded="false" aria-label="Open navigation"><span></span><span></span></button>
   </header>
-  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" hidden>
-    <a href="#about">Discover</a><a href="#moments">The gallery</a><a href="#motion">Motion</a><a href="#contact">Contact</a>
+  <nav id="mobileNav" class="mobile-nav" aria-label="Mobile navigation" hidden>
+    <a href="#about">About me</a><a href="#gallery">Gallery</a><a href="#films">Videos</a><a href="#details">Details</a><a href="#contact">Contact</a>
   </nav>
+
   <main id="main">
-    <section class="cinema" id="home" aria-labelledby="heroHeading">
-      <div class="cinema-media" id="heroMedia" aria-live="off"><!-- image/video slides from media.js --></div>
-      <div class="cinema-grain" aria-hidden="true"></div>
+    <section id="home" class="cinema" aria-labelledby="heroHeading">
+      <div id="heroMedia" class="cinema-media" aria-live="off"></div>
       <div class="cinema-shade" aria-hidden="true"></div>
-      <div class="cinema-topline"><span>AN INDEPENDENT VISUAL JOURNAL</span><span>EDITION 001 / MAMTU</span></div>
+      <div class="cinema-topline"><span>INDEPENDENT PROFILE · SAKET, NEW DELHI</span><span>PERSONAL & PRIVATE</span></div>
       <div class="cinema-copy">
-        <p class="cinema-eyebrow"><span class="pulse-dot"></span> A WORLD OF ITS OWN</p>
-        <h1 id="heroHeading">Certain<br>moments <em>stay.</em></h1>
-        <p>Beautiful details. Unwritten stories. A collection of moments that deserve a closer look.</p>
-        <div class="cinema-actions"><a class="pill-btn ivory" href="#moments">EXPLORE THE GALLERY <span aria-hidden="true">↗</span></a><a class="text-cta" href="#motion"><span class="play-ring">▶</span> THE MOTION EDITION</a></div>
+        <p class="cinema-eyebrow"><span class="pulse-dot" aria-hidden="true"></span> HELLO MY DEARS, WELCOME</p>
+        <h1 id="heroHeading">Meet <em>Mamtu.</em></h1>
+        <p>Playful at heart. Confident in her own way. A little mystery, a lot of personality, and a world worth discovering.</p>
+        <div class="cinema-actions">
+          <a class="pill-btn ivory" href="#gallery">VIEW MY GALLERY <span aria-hidden="true">↗</span></a>
+          <a class="text-cta" href="#about">GET TO KNOW ME <span aria-hidden="true">↓</span></a>
+        </div>
       </div>
-      <aside class="cinema-rail" aria-label="Featured slide navigation">
-        <span class="rail-label">CURRENTLY IN FRAME</span>
-        <p class="rail-caption" id="heroCaption">A softer kind of statement</p>
-        <div class="slide-thumbnails" id="heroThumbnails"></div>
-      </aside>
+      <aside class="cinema-rail" aria-label="Featured media"><span class="rail-label">A MOMENT IN FOCUS</span><p class="rail-caption" id="heroCaption">A little mystery</p><div id="heroThumbnails" class="slide-thumbnails"></div></aside>
       <div class="cinema-bottom">
-        <div class="slide-nav"><span id="heroIndex">01</span><span class="slide-total" id="heroTotal">/ 06</span><div class="progress-track"><span id="heroProgress"></span></div><button id="heroPrev" type="button" aria-label="Previous slide">←</button><button id="heroNext" type="button" aria-label="Next slide">→</button><button id="heroPause" type="button" aria-pressed="false" aria-label="Pause slideshow">Ⅱ</button></div>
-        <a href="#about" class="scroll-note">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a>
+        <div class="slide-nav"><span id="heroIndex">01</span><span id="heroTotal" class="slide-total">/ 03</span><div class="progress-track"><span id="heroProgress"></span></div><button type="button" id="heroPrev" aria-label="Previous slide">←</button><button type="button" id="heroNext" aria-label="Next slide">→</button><button type="button" id="heroPause" aria-pressed="false" aria-label="Pause slideshow">Ⅱ</button></div>
+        <a class="scroll-note" href="#about">DISCOVER MORE <span aria-hidden="true">↓</span></a>
       </div>
     </section>
 
-    <section class="opening" id="about" aria-labelledby="openingHeading">
-      <div class="opening-label"><span class="mini-line"></span> THE INTRODUCTION <span>01 — 05</span></div>
-      <div class="opening-layout">
-        <h2 id="openingHeading">A little mystery.<br><em>A lasting impression.</em></h2>
-        <div class="opening-copy"><p class="large-copy">Not everything worth remembering can be put into words.</p><p>MAMTU is a personal space for visual storytelling, atmosphere and individuality. This is an early design preview; the personal introduction will be written with owner-approved details.</p><a class="ink-link" href="#moments">THE VISUAL STORY <span>↗</span></a></div>
+    <section id="about" class="opening" aria-labelledby="aboutHeading">
+      <div class="opening-label"><span class="mini-line"></span> THE PERSON BEHIND THE PORTRAITS <span>01 / ABOUT ME</span></div>
+      <div class="about-composition">
+        <div class="about-picture"><img src="/assets/images/7.jpeg" loading="lazy" alt="Mamtu — photograph 7"><span class="picture-note">A PERSONAL INTRODUCTION</span></div>
+        <div class="about-words">
+          <span class="small-red">A NOTE FROM MAMTU</span>
+          <h2 id="aboutHeading">Warmth, charm &<br><em>a playful spirit.</em></h2>
+          <p class="opening-large">Hello my dears, welcome to my profile. ❤️</p>
+          <p>I'm Mamtu, based in Saket, New Delhi. I am friendly, outgoing, playful and love good conversation. I appreciate thoughtful people, a relaxed atmosphere and those little moments that make a meeting memorable.</p>
+          <p>For me, respect and personal boundaries matter just as much as confidence. I value privacy, good manners and clear communication.</p>
+          <blockquote>“I only meet people who understand me and respect me.”</blockquote>
+          <a class="ink-link" href="#details">A FEW THINGS TO KNOW <span>↗</span></a>
+        </div>
       </div>
-      <div class="opening-signature"><span>THE RED EDITION</span><span>AN EDITORIAL EXPERIENCE / 2026</span></div>
     </section>
 
-    <section class="lookbook" id="moments" aria-labelledby="galleryHeading">
-      <div class="section-heading-grid"><p class="section-kicker">02 / THE VISUAL DIARY</p><div><h2 id="galleryHeading">Made to <em>feel.</em><br>Not just to see.</h2></div><div class="heading-aside"><p>An evolving collection of portraits, details and memories. Original abstract art currently stands in for future approved photography.</p><span>SELECTED FRAMES — VOL. 01</span></div></div>
+    <section id="gallery" class="lookbook" aria-labelledby="galleryHeading">
+      <div class="section-heading-grid"><p class="section-kicker">02 / PHOTOGRAPHY</p><div><h2 id="galleryHeading">My world,<br><em>in pictures.</em></h2></div><div class="heading-aside"><p>A personal collection of moments and photographs. Browse the gallery and take a closer look.</p><span>EIGHT SELECTED PHOTOGRAPHS</span></div></div>
       <div class="lookbook-grid" id="lookbookGrid"></div>
-      <div class="lookbook-foot"><p>IMAGE ARCHIVE — PLACEHOLDER STUDIES UNTIL REAL PORTRAITS ARE PROVIDED</p><a href="#contact" class="ink-link">ENQUIRE ABOUT MAMTU <span>↗</span></a></div>
+      <div class="lookbook-foot"><p>A LITTLE PRIVACY MAKES EVERY STORY MORE PERSONAL.</p><a class="ink-link" href="#films">WATCH MY VIDEOS <span>↗</span></a></div>
     </section>
 
-    <section class="motion-section" id="motion" aria-labelledby="motionHeading">
-      <div class="motion-title"><p class="section-kicker">03 / IN MOTION</p><h2 id="motionHeading">An unfolding<br><em>story.</em></h2><p>Moving images, fleeting glances and a little atmosphere. When an approved video is added, it will become part of the homepage sequence too.</p></div>
-      <div class="film-window" id="filmWindow">
-        <img src="/assets/images/art-study-06.svg" id="filmPoster" alt="Original abstract red film poster" loading="lazy">
-        <video id="featureFilm" controls playsinline preload="none" poster="/assets/images/art-study-06.svg" hidden></video>
-        <div class="film-intro" id="filmIntro"><span class="film-circle" aria-hidden="true">↗</span><span>AN ORIGINAL FILM IS COMING</span><small>UPLOAD AN OWNER-APPROVED VIDEO TO ACTIVATE</small></div>
-        <span class="film-index">FILM Nº 001 / MAMTU</span>
+    <section id="films" class="motion-section" aria-labelledby="motionHeading">
+      <div class="motion-intro"><div><p class="section-kicker">03 / MOVING PORTRAITS</p><h2 id="motionHeading">A little more<br><em>in motion.</em></h2></div><p>Sometimes a short film says more than a photograph ever could. Watch three moments from my personal video collection.</p></div>
+      <div id="filmsGrid" class="films-grid"></div>
+    </section>
+
+    <section class="manifesto" aria-label="Mamtu's philosophy"><div class="manifesto-small"><span>A PERSONAL PHILOSOPHY</span><span class="manifesto-symbol">✳</span></div><blockquote>“What you see<br>is what you <em>get.</em>”</blockquote><div class="manifesto-bottom"><span>— MAMTU</span><span>CONFIDENCE · RESPECT · DISCRETION</span></div></section>
+
+    <section id="details" class="details" aria-labelledby="detailsHeading">
+      <div class="details-intro"><p class="section-kicker">04 / GOOD TO KNOW</p><h2 id="detailsHeading">Thoughtful<br><em>details matter.</em></h2><p>I value genuine, respectful conversations and clear arrangements. Here are a few details worth knowing before getting in touch.</p><div class="details-photo"><img src="/assets/images/8.jpeg" alt="Mamtu — photograph 8" loading="lazy"></div></div>
+      <div class="details-info">
+        <div class="info-line"><span>01</span><div><h3>Based in South Delhi</h3><p>Saket, New Delhi. The exact meeting location is shared privately when appropriate.</p></div></div>
+        <div class="info-line"><span>02</span><div><h3>Respect is essential</h3><p>I appreciate polite conversation, discretion and people who respect my time and boundaries.</p></div></div>
+        <div class="info-line"><span>03</span><div><h3>By prior arrangement</h3><p>Advance planning is appreciated. Please enquire directly about availability, timing and any location preferences.</p></div></div>
+        <div class="info-line"><span>04</span><div><h3>Privacy first</h3><p>Some face photographs are intentionally withheld for privacy. Any identity questions can be discussed through my official contact channel.</p></div></div>
       </div>
     </section>
-
-    <section class="manifesto" aria-label="Editorial reflection"><div class="manifesto-small"><span>04 / THE NOTE</span><span class="manifesto-symbol">✳</span></div><blockquote>It's the little things<br>that make it <em>unforgettable.</em></blockquote><div class="manifesto-bottom"><span>AN EDITORIAL THOUGHT</span><span>MADE WITH INTENTION / MAMTU</span></div></section>
-
-    <section class="details" id="notes"><div class="details-heading"><p class="section-kicker">05 / BEHIND THE FRAME</p><h2>There is more<br>to the <em>story.</em></h2></div><div class="details-gallery"><article><div class="detail-photo"><img src="/assets/images/art-study-04.svg" alt="Original rose and burgundy abstract study" loading="lazy"></div><span>01 / A PERSONAL NOTE</span><h3>Beauty in the in-between</h3><p>A space for the quiet and extraordinary things that make each day unique.</p></article><article><div class="detail-photo"><img src="/assets/images/art-study-05.svg" alt="Original plum and blush art study" loading="lazy"></div><span>02 / AN EDITORIAL MOMENT</span><h3>Always a little curious</h3><p>A work in progress, waiting for the stories and places that matter most.</p></article></div></section>
 
     <section class="contact" id="contact" aria-labelledby="contactHeading">
-      <div class="contact-intro"><p class="section-kicker">06 / A PERSONAL ENQUIRY</p><h2 id="contactHeading">Say<br><em>hello.</em></h2><p>Every story begins somewhere. This preview does not yet have a verified owner email, so enquiries cannot be sent until it is configured.</p><div class="contact-signoff">MAMTU <span>✳</span> A NOTE OF INTENTION</div></div>
-      <form id="contactForm" class="contact-form" novalidate><label for="name">YOUR NAME</label><input id="name" name="name" maxlength="100" autocomplete="name" placeholder="How should we address you?" required><label for="email">YOUR EMAIL</label><input id="email" name="email" type="email" maxlength="160" autocomplete="email" placeholder="you@example.com" required><label for="message">YOUR MESSAGE</label><textarea id="message" name="message" maxlength="2000" rows="4" placeholder="A thoughtful introduction..." required></textarea><button type="submit" class="pill-btn red">PREPARE AN ENQUIRY <span aria-hidden="true">↗</span></button><p class="form-notice" role="status" id="formNotice">Private preview: no message is transmitted or saved here.</p></form>
+      <div class="contact-photo"><img src="/assets/images/3.jpeg" loading="lazy" alt="Mamtu — photograph 3"><span>THE NEXT CHAPTER STARTS WITH A CONVERSATION</span></div>
+      <div class="contact-content"><p class="section-kicker">05 / STAY IN TOUCH</p><h2 id="contactHeading">Say <em>hello.</em></h2><p>Thank you for visiting. I enjoy genuine introductions and respectful conversations. You can find me on Telegram at the official handle below.</p>
+        <div class="telegram-handle"><span>TELEGRAM</span><strong>@mistressmamtu</strong></div>
+        <a class="pill-btn ivory" href="https://t.me/mistressmamtu" target="_blank" rel="noopener noreferrer">OPEN TELEGRAM <span aria-hidden="true">↗</span></a>
+        <small>Personal information and availability should be discussed privately. Please do not send sensitive documents through this website.</small>
+      </div>
     </section>
   </main>
-  <footer><div class="footer-top"><a href="#top" class="footer-name">MAMTU<span>.</span></a><p>A PERSONAL VISUAL JOURNAL<br>IN THE RED EDITION.</p></div><div class="footer-bottom"><span>© <span id="currentYear">2026</span> MAMTU. ALL RIGHTS RESERVED.</span><span>PRIVATE PREVIEW / CONTENT PENDING APPROVAL</span><a href="#top">BACK TO TOP ↑</a></div></footer>
-
-  <aside class="concierge"><button class="concierge-toggle" id="conciergeToggle" aria-controls="conciergePanel" aria-expanded="false" type="button"><span>✳</span> ASK MAMTU</button><section class="concierge-panel" id="conciergePanel" aria-label="Site guide" hidden><div class="concierge-head"><strong>MAMTU / YOUR GUIDE</strong><button type="button" id="conciergeClose" aria-label="Close guide">×</button></div><div class="concierge-messages" id="conciergeMessages" role="log" aria-live="polite"><p class="concierge-bubble">Welcome to MAMTU. I can guide you through this preview, the gallery and the media process. Personal details are not yet confirmed.</p></div><form id="conciergeForm"><label class="sr-only" for="conciergeQuestion">Ask a question</label><input id="conciergeQuestion" maxlength="240" placeholder="Ask about the site..." required><button type="submit" aria-label="Send question">↗</button></form><small>LOCAL PREVIEW GUIDE / NOT A LIVE AI MODEL</small></section></aside>
-  <dialog id="lightbox" aria-label="Gallery viewer"><button type="button" class="lightbox-close" id="lightboxClose" aria-label="Close gallery">×</button><img alt="" id="lightboxImage"><div class="lightbox-bottom"><span id="lightboxTitle"></span><div><button id="lightboxPrev" aria-label="Previous image">←</button><button id="lightboxNext" aria-label="Next image">→</button></div></div></dialog>
-</body>
-</html>
+  <footer><div class="footer-top"><a href="#top" class="footer-name">MAMTU<span>.</span></a><p>INDEPENDENT PERSONAL PROFILE<br>SAKET · NEW DELHI</p></div><div class="footer-bottom"><span>© <span id="currentYear">2026</span> MAMTU. ALL RIGHTS RESERVED.</span><span>PRIVACY · MUTUAL RESPECT · ADULT AUDIENCES 18+</span><a href="#top">BACK TO TOP ↑</a></div></footer>
+  <dialog id="lightbox" aria-label="Photo gallery viewer"><button type="button" class="lightbox-close" id="lightboxClose" aria-label="Close gallery">×</button><img alt="" id="lightboxImage"><div class="lightbox-bottom"><span id="lightboxTitle"></span><div><button id="lightboxPrev" aria-label="Previous image">←</button><button id="lightboxNext" aria-label="Next image">→</button></div></div></dialog>
+</body></html>
