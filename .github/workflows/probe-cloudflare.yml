@@ -10,25 +10,28 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
-      - name: Verify live site and real media
+      - name: Verify live search access and pages
         shell: bash
         run: |
           set -euo pipefail
           base='https://mamtu.mohit-datascientist108.workers.dev'
           for attempt in $(seq 1 24); do
+            robots="$(curl -fsSL --connect-timeout 5 --max-time 12 "$base/robots.txt" || true)"
+            sitemap="$(curl -fsSL --connect-timeout 5 --max-time 12 "$base/sitemap.xml" || true)"
             html="$(curl -fsSL --connect-timeout 5 --max-time 12 "$base/" || true)"
-            media="$(curl -fsSL --connect-timeout 5 --max-time 12 "$base/media.js" || true)"
-            if [[ "$html" == *"Meet <em>Mamtu."* ]] && [[ "$html" == *'id="filmsGrid"'* ]] && [[ "$media" == *'/assets/images/6.jpeg'* ]] && [[ "$media" == *'/assets/images/3.jpeg'* ]] && [[ "$media" == *'/assets/videos/1.mp4'* ]]; then
-              for asset in atelier.css atelier.js assets/images/6.jpeg assets/images/3.jpeg assets/videos/1.mp4 assets/videos/2.mp4 assets/videos/3.mp4; do
-                code="$(curl -LsS -o /dev/null -w '%{http_code}' --max-time 15 "$base/$asset")"
-                echo "$asset HTTP $code"
-                if [[ "$code" != "200" ]]; then exit 1; fi
+            if [[ "$robots" == *'Allow: /'* ]] && [[ "$robots" == *"Sitemap: $base/sitemap.xml"* ]] && [[ "$sitemap" == *"<loc>$base/</loc>"* ]] && [[ "$html" == *'name="robots" content="index,follow"'* ]] && [[ "$html" == *"rel=\"canonical\" href=\"$base/\""* ]]; then
+              for page in about gallery videos services reviews contact; do
+                page_html="$(curl -fsSL --max-time 12 "$base/$page")"
+                [[ "$page_html" == *'name="robots" content="index,follow"'* ]]
+                [[ "$page_html" == *"rel=\"canonical\" href=\"$base/$page\""* ]]
+                [[ "$sitemap" == *"<loc>$base/$page</loc>"* ]]
+                echo "$page HTTP 200; indexable canonical in sitemap"
               done
-              echo "LIVE_RELEASE_VERIFIED=$base/"
+              echo "LIVE_INDEXING_VERIFIED=$base/"
               exit 0
             fi
-            echo "Waiting for Cloudflare to serve updated Mamtu assets (attempt $attempt)"
+            echo "Waiting for Cloudflare search files (attempt $attempt)"
             sleep 12
           done
-          echo "::error::Live release did not match expected Mamtu version"
+          echo "::error::Live search access did not match the repository"
           exit 1
