@@ -12,3 +12,6 @@ assets/videos/README.md
 *.cjs
 *.yml
 *.yaml
+
+worker.js
+lib
