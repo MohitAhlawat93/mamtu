@@ -3,7 +3,7 @@ export const MAMTU_DATA = {
     name: "Mamtu",
     base: "Saket, New Delhi",
     region: "South Delhi / Delhi NCR",
-    profileType: "Independent · Elite personal companion",
+    profileType: "Independent elite companion",
     personality: ["playful", "friendly", "outgoing", "confident", "a little mischievous", "warm", "polite"],
     style: ["casual", "monochrome", "feminine", "traditional", "elegant"],
     values: ["respect", "privacy", "clear communication", "good manners", "personal boundaries", "discretion"],
@@ -11,101 +11,50 @@ export const MAMTU_DATA = {
       figure: "36-28-42",
       notes: "Soft curves, feminine proportions, carefully maintained."
     },
-    intro: "Mamtu is based in Saket, New Delhi. Her public profile presents her as playful, friendly, outgoing and confident, with a personal style that ranges from casual and monochrome looks to traditional details. She meets only gentlemen who value quality, discretion and mutual respect.",
+    intro: "Mamtu is an independent companion based in Saket, New Delhi. Playful, confident and selective — she meets only gentlemen who value quality, discretion and mutual respect.",
     about: [
       "Mamtu wants the website to feel like a real introduction rather than only a page of pictures.",
-      "She appreciates thoughtful people, natural conversation, privacy and respectful communication.",
       "She lives in her own private flat in Saket and keeps the exact residential details offline.",
       "She is selective by design — her rates and standards are intentionally higher because she prefers quality over volume.",
-      "All photographs on this site are genuine. Face verification is offered after hotel booking confirmation for privacy."
+      "All photographs on this site are genuine. Face verification is offered after hotel booking confirmation for privacy.",
+      "She offers private incalls, outcalls to five-star hotels, overnight stays, girlfriend experience, sensory sessions, role play and private video calls."
     ],
     faq: [
-      { question: "What kind of people does Mamtu appreciate?", answer: "Gentlemen who are polite, relaxed, honest and respectful. She prefers genuine conversation to rehearsed lines and only meets those who understand and respect her boundaries." },
+      { question: "What kind of people does Mamtu appreciate?", answer: "Gentlemen who are polite, relaxed, honest and respectful. She prefers genuine conversation and only meets those who understand and respect her boundaries." },
       { question: "What matters most when getting in touch?", answer: "Clear communication, good manners and respect for privacy. A thoughtful hello is always a good start. Time-wasters are not entertained." },
       { question: "Where is Mamtu based?", answer: "Saket, New Delhi (South Delhi). She lives in her own private flat. Exact residential address is never published." },
-      { question: "Does the website publish exact availability or pricing?", answer: "Indicative ranges may be discussed, but exact current pricing, availability and arrangements are confirmed privately through her official channels." },
-      { question: "What are her hotel preferences?", answer: "For outcalls she prefers five-star hotels. OYO and lower-tier properties are not accepted." }
+      { question: "Does the website publish exact availability or pricing?", answer: "Starting rates are shown clearly on the Services page. Exact current pricing, availability and arrangements are confirmed privately." },
+      { question: "What are her hotel preferences?", answer: "For outcalls she accepts only five-star hotels. OYO and lower-tier properties are not accepted." }
     ]
   },
   services: [
-    {
-      title: "Private Appointment",
-      category: "Private",
-      summary: "Unhurried one-to-one time arranged in advance. Privacy, clear communication and a relaxed atmosphere are the foundation.",
-      terms: "Minimum two hours · By arrangement",
-      details: "The core experience — intimate, focused and free from rushing."
-    },
-    {
-      title: "Girlfriend Experience",
-      category: "Companionship",
-      summary: "Warm, affectionate time that feels natural and connected. Conversation, closeness and the feeling of being with someone who genuinely enjoys the moment.",
-      terms: "By arrangement",
-      details: "Many gentlemen describe this as the most memorable part of the time together."
-    },
-    {
-      title: "Sensory Experiences",
-      category: "Intimate",
-      summary: "Tantric-inspired massage, body-to-body contact and other sensual forms of touch designed to heighten pleasure and presence.",
-      terms: "Discussed privately",
-      details: "Slow, attentive and focused on the body."
-    },
-    {
-      title: "Role Play",
-      category: "Fantasy",
-      summary: "A range of role-play scenarios available for those who enjoy stepping into a different dynamic. Extra charge applies.",
-      terms: "With prior discussion",
-      details: "Teacher & student, boss & employee, classic maid, stranger, step dynamics, and more — including options in Hindi."
-    },
-    {
-      title: "Dinner & Social",
-      category: "Social",
-      summary: "An evening built around conversation, a good meal or a social setting when you prefer something less private and more polished.",
-      terms: "By arrangement",
-      details: "Ideal for gentlemen who value presence and conversation as much as intimacy."
-    },
-    {
-      title: "Outcall",
-      category: "Location",
-      summary: "A meeting at your hotel or another mutually agreed premium location in Delhi / NCR. Five-star preference is firm.",
-      terms: "Advance required · Higher rate",
-      details: "Only five-star hotels. OYO and three/four-star properties are not accepted."
-    },
-    {
-      title: "Extended & Overnight",
-      category: "Unhurried",
-      summary: "Longer arrangements for those who prefer not to watch the clock. Full-night options available.",
-      terms: "By arrangement",
-      details: "More time allows the experience to unfold naturally."
-    },
-    {
-      title: "Webcam Session",
-      category: "Digital",
-      summary: "Private video sessions for those who prefer to connect from a distance first or exclusively.",
-      terms: "From ₹10,000 for 30 minutes",
-      details: "Live, interactive and discreet."
-    },
-    {
-      title: "Something Tailored",
-      category: "Personal",
-      summary: "If your idea does not fit a neat category, introduce yourself and explain what you have in mind.",
-      terms: "Start a conversation",
-      details: "Selectivity works both ways — the right fit matters."
-    }
+    { title: "Incall – 1 Hour", category: "Incall", summary: "Private meeting at my place in Saket. Relaxed, intimate and focused entirely on you.", terms: "From ₹40,000", details: "Minimum engagement starts here." },
+    { title: "Incall – 2 Hours", category: "Incall", summary: "Extended private time for deeper connection, conversation and a more unhurried experience.", terms: "From ₹70,000", details: "Recommended for first meetings." },
+    { title: "Outcall – 1 Hour", category: "Outcall", summary: "I come to your five-star hotel in Delhi / NCR. Discreet, punctual and polished.", terms: "From ₹60,000", details: "Advance required. Five-star hotels only." },
+    { title: "Outcall – 2 Hours", category: "Outcall", summary: "Longer outcall session at your preferred premium location. Ideal when you want more time without rushing.", terms: "From ₹1,00,000", details: "Advance required. Five-star hotels only." },
+    { title: "Overnight / Full Night", category: "Overnight", summary: "Spend the night together. Soft companionship, intimacy and the comfort of not watching the clock.", terms: "From ₹2,00,000", details: "The most immersive option." },
+    { title: "Two Shots", category: "Private", summary: "Focused private time structured around two full experiences.", terms: "Around ₹1,00,000", details: "Discussed and confirmed privately." },
+    { title: "Girlfriend Experience", category: "Companionship", summary: "Warm, affectionate time that feels natural and connected — conversation, closeness and real chemistry.", terms: "By arrangement", details: "Many gentlemen describe this as the highlight." },
+    { title: "Sensory / Massage", category: "Intimate", summary: "Tantric-inspired touch, body-to-body contact and sensual attention designed to heighten pleasure.", terms: "By arrangement", details: "Slow, attentive and focused on the body." },
+    { title: "Role Play", category: "Fantasy", summary: "Teacher & student, boss & employee, classic maid, stranger, step dynamics and more — including Hindi options.", terms: "Extra charge", details: "Discussed in advance." },
+    { title: "Dinner Date", category: "Social", summary: "Elegant company for dinner and conversation. A relaxed social evening before or instead of a private meeting.", terms: "By arrangement", details: "Polished presence." },
+    { title: "Video Call", category: "Digital", summary: "Private live video session. Perfect for a personal introduction or a short, focused experience from anywhere.", terms: "₹10,000 / 30 min", details: "Live and interactive." },
+    { title: "Custom / Threesome", category: "Personal", summary: "Tell me what you’re looking for — longer time, specific fantasies or arrangements involving more than one person.", terms: "Tailored", details: "Threesome full night from around ₹5,00,000." }
   ],
   pricing: {
     philosophy: "My rates are intentionally higher because I meet only gentlemen who value quality, discretion and mutual respect. If the budget does not align, please do not contact me — it saves both of us time.",
     notes: [
-      "Incall rates begin higher than the average market for the level of attention and environment offered.",
-      "Outcalls carry a premium and require advance confirmation.",
-      "Minimum engagement is two hours.",
-      "Full-night and multi-shot arrangements are available and discussed privately.",
-      "Threesome enquiries can be considered for the right arrangement."
+      "Minimum engagement is two hours for most in-person meetings (1-hour options available by discussion).",
+      "Outcalls require advance and are limited to five-star hotels.",
+      "All arrangements are confirmed directly with me."
     ],
     indicative: {
-      incallHour: "From ₹40,000",
-      outcallHour: "From ₹60,000",
+      incall1h: "From ₹40,000",
+      incall2h: "From ₹70,000",
+      outcall1h: "From ₹60,000",
+      outcall2h: "From ₹1,00,000",
+      fullNight: "From ₹2,00,000",
       twoShots: "Around ₹1,00,000",
-      fullNight: "Around ₹2,00,000",
       threesomeNight: "Around ₹5,00,000",
       webcam30: "₹10,000 for 30 minutes"
     }
@@ -166,7 +115,7 @@ export const MAMTU_DATA = {
     standards: [
       "Only gentlemen who can comfortably meet the stated standards are invited to enquire.",
       "Five-star hotels are preferred for outcalls. Lower-tier properties are not accepted.",
-      "Minimum engagement is two hours."
+      "Minimum engagement is generally two hours."
     ]
   },
   site: {
