@@ -1,0 +1,14 @@
+.git
+.github
+node_modules
+tests
+README.md
+package.json
+wrangler.jsonc
+.assetsignore
+assets/images/README.md
+assets/videos/README.md
+*.md
+*.cjs
+*.yml
+*.yaml
