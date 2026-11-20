@@ -17,7 +17,7 @@ try{
     await sleep(12000);
   }
   assert(ready,"Cloudflare did not serve the expanded Mamtu homepage");
-  for(const url of [...routes,"/atelier.css?v=editorial-20261120-v3","/atelier.js?v=editorial-20261120-v3","/assistant.css?v=rag-20261120","/assistant.js?v=rag-20261120","/data/mamtu-data.js","/assets/mark.svg"]){
+  for(const url of [...routes,"/atelier.css?v=editorial-20261120-v3","/atelier.js?v=editorial-20261120-v3","/assistant.css?v=rag-20261120","/assistant.js?v=rag-20261120-v2","/data/mamtu-data.js","/assets/mark.svg"]){
     const res=await fetch(BASE+url,{signal:AbortSignal.timeout(15000)});
     assert(res.ok,"Missing live route/asset "+url+" HTTP "+res.status);
   }
