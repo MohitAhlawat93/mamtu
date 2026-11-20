@@ -25,6 +25,13 @@
       const original=buttons[index].querySelector("img");
       image.src=original.currentSrc || original.src;
       image.alt=original.alt;
+      const card=buttons[index].closest(".story-card");
+      const kicker=card?.querySelector(".story-kicker")?.textContent || "";
+      const title=card?.querySelector("h2")?.textContent || "Mamtu";
+      const description=card?.querySelector(".story-description")?.textContent || "";
+      document.getElementById("lightboxKicker").textContent=kicker;
+      document.getElementById("lightboxTitle").textContent=title;
+      document.getElementById("lightboxDescription").textContent=description;
       count.textContent=String(index+1).padStart(2,"0")+" / "+String(buttons.length).padStart(2,"0");
     }
     buttons.forEach((button,i)=>button.addEventListener("click",()=>{
