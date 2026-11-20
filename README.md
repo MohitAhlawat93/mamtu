@@ -1,38 +1,41 @@
-# MAMTU — Red Edition / Cinematic Portfolio
+# MAMTU — Personal Profile Website
 
-LIVE PREVIEW: https://mamtu.mohit-datascientist108.workers.dev/
+Live website: https://mamtu.mohit-datascientist108.workers.dev/
 
-Hosted on Cloudflare Workers Static Assets, with GitHub main branch auto-deploy.
-This is a new original full-width, video-ready website—not a copy of the layouts from Rebecca or Austria.
+GitHub's main branch deploys automatically to Cloudflare Workers. This is a responsive, real-media editorial site with a three-part homepage carousel, an eight-photo gallery, three playable videos, personal profile, privacy information, and the official Telegram link.
 
-## Add real images / video via GitHub
-1. Upload owner-approved images to assets/images/ — preferred formats JPG or WebP, optimized for 1600-2400 px.
-2. Open media.js and edit slides for each image. Each slide has src (file path), title, tag and alt. The same list powers the homepage auto carousel AND the gallery. Replace the original abstract SVG placeholders when real photos are available.
-3. The homepage automatically rotates every 6 seconds. Adjust imageDurationMs for speed. Buttons provide next/previous and pause; prefers-reduced-motion disables autoplay.
-4. Upload an approved compressed MP4 to assets/videos/hero.mp4. Then edit media.js and set heroVideo to "/assets/videos/hero.mp4". The file is checked before the site offers video playback. It appears as the first hero slide for 12 seconds, then portraits rotate; it also powers the in-page Motion film player.
-5. After verifying an owner destination email, set contactEmail in media.js. Until then, enquiry is disabled; the form does NOT send/store submissions.
+## Real media (already uploaded)
 
-IMPORTANT: Cloudflare Workers Static Assets allow at most 25 MiB for one file, including video. Keep homepage video below 25 MiB, preferably much smaller; use R2 or Stream for larger videos. Do not commit private or unapproved client photographs, sensitive information, or API credentials.
+- Images: assets/images/1.jpeg through assets/images/8.jpeg
+- Videos: assets/videos/1.mp4, assets/videos/2.mp4, assets/videos/3.mp4
+- Homepage order: **6.jpeg → 3.jpeg → 1.mp4** (6 seconds per photo, 11 seconds for film)
+- The photo gallery uses all eight images; the film section uses all three videos.
 
-## Features
-- Full-bleed cinematic hero, auto image transitions, optional video, progress indicator, thumbnails, previous/next and pause
-- Asymmetric six-photo lookbook gallery and accessible lightbox
-- Responsive home, introduction, motion, editorial, contact and mobile navigation
-- Small local FAQ guide (not a generative AI model)
-- Safe preview noindex, no fabricated contacts, no unapproved profile claims
+The media file order, paths, captions, and timing are in **media.js**, which is the only media manifest. Images and clips are reused where beneficial. Replace any media only with the subject's permission.
 
-## Files
-- index.html — main site
-- atelier.css — current responsive styling
-- atelier.js — carousel, gallery, mobile menu, concierge and contact logic
-- media.js — MEDIA CONFIG: start here when photos/videos arrive
-- assets/images/ — placeholder artwork and eventually owner-approved images
-- assets/videos/ — future approved MP4 files
-- wrangler.jsonc — Cloudflare Worker deployment settings
-- tests/smoke.cjs — source validation
-- tests/browser.cjs — live Chromium QA; screenshots stored in GitHub Actions artifacts
+## Editing
 
-Old app.js and styles.css are not loaded by the new homepage; they are retained only for reference.
-Use npm test to run source checks. Use python -m http.server 8000 for local browser preview.
+- index.html — page layout and owner-supplied non-explicit biography, Telegram handle, privacy wording
+- atelier.css — visual design and mobile layouts
+- atelier.js — video slideshow, gallery viewer, keyboard navigation, mobile menu
+- media.js — change image/video order, timing, captions
+- assets/images — numbered photos, which are public
+- assets/videos — numbered MP4s, which are public
+- wrangler.jsonc — Cloudflare Workers static asset configuration
+- tests/smoke.cjs and tests/browser.cjs — source and live-browser checks
 
-Production launch still requires client-approved real media, factual owner copy, verified contact details, legal notices, and a separate decision on any real AI concierge or protected admin dashboard.
+The homepage video plays muted; other videos require the visitor to press Play. The hero can be paused, and respects reduced-motion preferences. The site collects no contact-form data, has no analytics, and uses the provided official Telegram handle.
+
+## Privacy and publishing
+
+The exact private residential location is deliberately not displayed. The profile says Saket, New Delhi. Owner/subject authorization, age verification, regulatory compliance and permission to publish each photo/video should be confirmed outside this repository.
+
+The temporary workers.dev address remains **noindex** (robots.txt and meta tag). Before publishing on a permanent domain, obtain the subject's consent, review local rules and complete legal/privacy disclosures. Do not store private IDs, addresses or credentials in this public GitHub repository.
+
+## Testing
+
+Run `npm test` for smoke tests. The GitHub Actions browser workflow tests the deployed site using Chromium (desktop and mobile), including slide order, three films, image gallery, navigation and the Telegram link.
+
+## Deployment
+
+Changes committed to main automatically start a Cloudflare build. No manual deployment command or Cloudflare API key is required for ordinary updates.
