@@ -10,23 +10,25 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
-      - name: Check production website and latest assets
+      - name: Verify live site and real media
         shell: bash
         run: |
           set -euo pipefail
           base='https://mamtu.mohit-datascientist108.workers.dev'
           for attempt in $(seq 1 24); do
-            html="$(curl -fsSL --connect-timeout 5 --max-time 14 "$base/" || true)"
-            js="$(curl -fsSL --connect-timeout 5 --max-time 14 "$base/atelier.js" || true)"
-            css="$(curl -fsSL --connect-timeout 5 --max-time 14 "$base/atelier.css" || true)"
-            art="$(curl -fsSL --connect-timeout 5 --max-time 14 "$base/assets/images/art-study-06.svg" || true)"
-            if [[ "$html" == *"Certain"* ]] && [[ "$html" == *"atelier.css"* ]] && [[ "$js" == *"initializeMedia"* ]] && [[ "$css" == *"cinema"* ]] && [[ "$art" == *"ARCHIVE / NOCTURNE"* ]]; then
+            html="$(curl -fsSL --connect-timeout 5 --max-time 12 "$base/" || true)"
+            media="$(curl -fsSL --connect-timeout 5 --max-time 12 "$base/media.js" || true)"
+            if [[ "$html" == *"Meet <em>Mamtu."* ]] && [[ "$html" == *'id="filmsGrid"'* ]] && [[ "$media" == *'/assets/images/6.jpeg'* ]] && [[ "$media" == *'/assets/images/3.jpeg'* ]] && [[ "$media" == *'/assets/videos/1.mp4'* ]]; then
+              for asset in atelier.css atelier.js assets/images/6.jpeg assets/images/3.jpeg assets/videos/1.mp4 assets/videos/2.mp4 assets/videos/3.mp4; do
+                code="$(curl -LsS -o /dev/null -w '%{http_code}' --max-time 15 "$base/$asset")"
+                echo "$asset HTTP $code"
+                if [[ "$code" != "200" ]]; then exit 1; fi
+              done
               echo "LIVE_RELEASE_VERIFIED=$base/"
-              echo "PASS: homepage, cinematic stylesheet, timed media code and latest original art"
               exit 0
             fi
-            echo "Waiting for matching Cloudflare release (attempt $attempt / 24)"
+            echo "Waiting for Cloudflare to serve updated Mamtu assets (attempt $attempt)"
             sleep 12
           done
-          echo "::error::Cloudflare did not serve the final Mamtu build within the verification window"
+          echo "::error::Live release did not match expected Mamtu version"
           exit 1
