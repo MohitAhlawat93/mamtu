@@ -1,5 +1,6 @@
 import { MAMTU_DATA } from "./data/mamtu-data.js";
-import { retrieveMamtuKnowledge, formatMamtuContext } from "./lib/mamtu-knowledge.js";
+import { formatMamtuContext } from "./lib/mamtu-knowledge.js";
+import { retrieveHybridMamtuKnowledge, DEFAULT_EMBEDDING_MODEL } from "./lib/semantic-retrieval.js";
 
 const SYSTEM=`You are Mamtu Assistant: warm, confident, concise, discreet, perceptive and genuinely useful.
 
@@ -204,7 +205,7 @@ export async function generateAssistantAnswer({message,history=[],page="/",data=
 
   const recent=history.filter(x=>x.role==="user").slice(-2).map(x=>x.content).join(" ");
   const query=recent?recent+" "+message:message;
-  const chunks=retrieveMamtuKnowledge(query,8,data,{page});
+  const chunks=await retrieveHybridMamtuKnowledge(query,8,data,{page,ai:env.AI,model:env.CLOUDFLARE_EMBEDDING_MODEL||DEFAULT_EMBEDDING_MODEL});
   const context=formatMamtuContext(chunks);
   const messages=[
     {role:"system",content:SYSTEM},
@@ -213,8 +214,8 @@ export async function generateAssistantAnswer({message,history=[],page="/",data=
   ];
 
   const providers=[
-    {mode:"rag-cloudflare",run:()=>askCloudflare(messages,env)},
-    {mode:"rag-groq",run:()=>askGroq(messages,env)}
+    {mode:"rag-groq",run:()=>askGroq(messages,env)},
+    {mode:"rag-cloudflare",run:()=>askCloudflare(messages,env)}
   ];
   for(const provider of providers){
     try{
@@ -247,7 +248,7 @@ export default {
       if(request.method!=="GET")return json({error:"Use GET."},405);
       return json({ok:true,configured:Boolean(env.AI||env.GROQ_API_KEY),config:{enabled:true,displayName:"Mamtu Assistant",subtitle:"Profile, services, rates & practicalities.",welcome:"Hi ✦ I’m Mamtu Assistant.",defaultIntro:"Ask me about Mamtu’s profile, services, rates, what she offers, or how to get in touch.",pausedMessage:"Mamtu Assistant is taking a short pause. Please use WhatsApp or Telegram for anything time-sensitive."}});
     }
-    if(url.pathname==="/api/assistant-health")return json({ok:true,modelConfigured:Boolean(env.AI||env.GROQ_API_KEY),providers:{cloudflare:{configured:Boolean(env.AI),model:env.CLOUDFLARE_AI_MODEL||CLOUDFLARE_MODEL},groq:{configured:Boolean(env.GROQ_API_KEY),model:env.GROQ_MODEL||"openai/gpt-oss-120b"}}});
+    if(url.pathname==="/api/assistant-health")return json({ok:true,modelConfigured:Boolean(env.AI||env.GROQ_API_KEY),retrieval:{lexical:true,embedding:{configured:Boolean(env.AI),model:env.CLOUDFLARE_EMBEDDING_MODEL||DEFAULT_EMBEDDING_MODEL}},providers:{groq:{configured:Boolean(env.GROQ_API_KEY),model:env.GROQ_MODEL||"openai/gpt-oss-120b",priority:1},cloudflare:{configured:Boolean(env.AI),model:env.CLOUDFLARE_AI_MODEL||CLOUDFLARE_MODEL,priority:2}}});
     return env.ASSETS.fetch(request);
   }
 };

@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check": "node --check worker.js && node --check assistant.js && node --check atelier.js && node --check media.js && node --check data/mamtu-data.js && node --check lib/mamtu-knowledge.js && node tests/smoke.cjs",
+    "check": "node --check worker.js && node --check assistant.js && node --check atelier.js && node --check media.js && node --check data/mamtu-data.js && node --check lib/mamtu-knowledge.js && node --check lib/semantic-retrieval.js && node tests/smoke.cjs && node tests/semantic-retrieval.mjs",
     "test": "npm run check"
   }
 }

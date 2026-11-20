@@ -57,6 +57,9 @@ assert(assistantCss.includes(".afterhours-card"),"Afterhours popup styling missi
 assert(workerSource.includes('url.pathname==="/api/assistant"'),"Worker assistant route missing");
 assert(workerSource.includes("GROQ_API_KEY"),"Groq RAG configuration missing");
 assert(workerSource.includes("env.AI.run"),"Cloudflare Workers AI integration missing");
+assert(fs.existsSync("lib/semantic-retrieval.js"),"Semantic retrieval integration missing");
+assert(workerSource.includes("retrieveHybridMamtuKnowledge"),"Hybrid embedding retrieval route missing");
+assert(workerSource.indexOf('mode:"rag-groq"')<workerSource.indexOf('mode:"rag-cloudflare"'),"Groq must run before Cloudflare generation");
 assert(workerSource.includes('mode:"rag-cloudflare"'),"Cloudflare-first RAG route missing");
 assert(workerSource.includes('mode:"rag-groq"'),"Groq fallback RAG route missing");
 assert(workerSource.includes("grounded-fallback"),"Grounded no-key fallback missing");
