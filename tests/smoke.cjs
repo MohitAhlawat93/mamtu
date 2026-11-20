@@ -8,7 +8,9 @@ for(const page of pages){
   assert(fs.existsSync(page),"Missing "+page);
   const content=read(page);
   assert(content.includes('name="viewport"'),"Mobile viewport missing: "+page);
-  assert(content.includes('name="robots" content="noindex,nofollow"'),"Staging indexing accidentally enabled: "+page);
+  assert(content.includes('name="robots" content="index,follow"'),"Search indexing disabled: "+page);
+  assert(content.includes('rel="canonical" href="https://mamtu.mohit-datascientist108.workers.dev/'+(page==="index.html"?"":page.replace(/\.html$/,""))+'"'),"Canonical URL missing: "+page);
+  assert(content.includes('name="rating" content="adult"'),"Adult content label missing: "+page);
   assert(/href="\/atelier\.css\?v=editorial-20261120-v\d+"/.test(content),"Versioned CSS missing: "+page);
   assert(/src="\/atelier\.js\?v=editorial-20261120-v\d+"/.test(content),"Versioned JS missing: "+page);
   assert(/href="\/assistant\.css\?v=rag-20261120-v\d+"/.test(content),"Assistant CSS missing: "+page);
@@ -23,6 +25,10 @@ for(const page of pages){
   assert(!/eight photos,? eight moods/i.test(content),"Fixed-size gallery slogan remains: "+page);
   assert(!content.includes("PRIVATE PREVIEW"),"Testing copy remains: "+page);
 }
+const robots=read("robots.txt"),sitemap=read("sitemap.xml");
+assert(robots.includes("Allow: /") && !robots.includes("Disallow: /"),"Public crawling blocked");
+assert(robots.includes("Sitemap: https://mamtu.mohit-datascientist108.workers.dev/sitemap.xml"),"Sitemap missing from robots");
+for(const page of pages)assert(sitemap.includes("<loc>https://mamtu.mohit-datascientist108.workers.dev/"+(page==="index.html"?"":page.replace(/\.html$/,""))+"</loc>"),"Page missing from sitemap: "+page);
 assert(fs.existsSync("assets/mark.svg"),"Brand mark asset missing");
 assert(home.includes('class="useful-bits"'),"Useful-bits homepage section missing");
 assert(home.includes("Saket · New Delhi"),"Useful-bits location missing");
