@@ -1,33 +1,51 @@
-# MAMTU — Multi-page Personal Profile Website
+# MAMTU — Editorial Multi-page Personal Profile
 
 Live site: https://mamtu.mohit-datascientist108.workers.dev/
 
 GitHub's `main` branch automatically deploys to Cloudflare Workers.
 
-## Pages and navigation
+## Current pages
 
-- `index.html` — simple homepage, featuring images **6** and **3** and video **1** together at the top; full-media display without cropping.
-- `about.html` — personal story and photographs 7 and 8.
-- `gallery.html` — all eight photographs in an uncropped masonry gallery with fullscreen lightbox.
-- `videos.html` — all three original videos, playable separately.
-- `details.html` — personal information, broad location, privacy and communication.
-- `contact.html` — Telegram link @mistressmamtu, without a dummy form.
+- `index.html` — expanded homepage with featured media, Mamtu monogram, “The useful bits”, services preview and honest reviews preview.
+- `about.html` — personal introduction, style, values and FAQs.
+- `gallery.html` — growing editorial gallery with individual stories and fullscreen viewer. Public copy does not hard-code a fixed collection size.
+- `videos.html` — personal video collection with descriptive editorial captions, without visible media numbering.
+- `services.html` — private/social service categories; exact arrangements and pricing are discussed privately rather than invented publicly.
+- `reviews.html` — honest review archive. No fabricated testimonials or star ratings; genuine reviews can be added with permission.
+- `details.html` — practical profile details, privacy notes and FAQs.
+- `contact.html` — official WhatsApp (+91 836 841 0417) and Telegram (@mistressmamtu).
 
-Shared styling is in `atelier.css`; shared interactions (mobile navigation, accessible photo lightbox, video focus) are in `atelier.js`. `media.js` remains as the original numbered-media inventory but the pages now include their real assets directly in HTML.
+## Brand
+
+The Mamtu monogram is stored at `assets/mark.svg` and appears in the header, footer and key editorial sections. Shared styling is in `atelier.css`; shared interactions are in `atelier.js`.
 
 ## Media
+
+Uploaded media currently lives at:
 
 - Images: `assets/images/1.jpeg` through `assets/images/8.jpeg`
 - Videos: `assets/videos/1.mp4` through `assets/videos/3.mp4`
 
-**IMPORTANT:** Featured images on the homepage and video/photo viewers use `object-fit: contain`, not `cover`, so portrait photos are displayed fully rather than cropped. The gallery also retains each photograph's natural aspect ratio.
+The public website deliberately avoids displaying filenames or “Photo 01 / Video 01” labels. Gallery copy is future-proofed so additional media can be added later without changing introductory wording.
 
-## Testing and deployment
+Featured media and viewers use `object-fit: contain` where full portrait visibility matters.
 
-Run `npm test` for source-level smoke checks (file existence, six-page routing, visible hero media, privacy, responsive styling). `tests/browser.cjs` contains live Playwright checks for desktop/mobile, gallery interaction and media visibility, when the CI runner has Playwright installed.
+## Testing
 
-The Cloudflare configuration is `wrangler.jsonc`. Updates pushed to main trigger automatic deployment. Leave `noindex,nofollow` on the temporary workers.dev preview until the subject has reviewed the whole site and consented to public launch.
+Run `npm test` for source-level smoke checks. The checks cover:
+
+- all eight site routes;
+- navigation consistency;
+- Mamtu monogram;
+- WhatsApp and Telegram links;
+- removal of numbered media labels;
+- current gallery/video assets;
+- Services and Reviews pages;
+- honest review empty state;
+- responsive styling and JavaScript syntax.
+
+`tests/browser.cjs` contains live Playwright checks for desktop/mobile when Playwright is available in the runner.
 
 ## Privacy
 
-Do not publish the subject's exact private address, identity documents, or credentials. Check authorization and adult age of subjects, consent for every image/video, and applicable local rules before promotion. The published pages list Saket, New Delhi only.
+Keep the workers.dev staging site `noindex,nofollow` until the subject has reviewed the complete website and consented to public launch. Do not publish a precise residential address, identity documents, credentials or other sensitive personal information.
