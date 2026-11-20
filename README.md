@@ -97,4 +97,4 @@ Do not add private residential addresses, identity documents, credentials, or fa
 
 ## Deployment sync
 
-Deployment sync: latest main includes user updates through 895d071570d8d462083e20f360edfc72ce13f82f.
+Deployment sync: latest main includes user updates through bef8e932b3556952026da60ed289f95fdedb4dc1.
