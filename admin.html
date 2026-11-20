@@ -18,13 +18,16 @@
   <p class="mc-lede">Update the live website and Mamtu Assistant without editing GitHub files.</p>
   <form class="mc-login-form" data-login-form>
     <label>
-      <span>Owner key</span>
-      <input type="password" name="token" autocomplete="current-password" required placeholder="Enter mamtu_token">
+      <span>Admin password</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="password" name="token" autocomplete="current-password" required placeholder="Enter your admin password" style="min-width:0;flex:1">
+        <button type="button" class="mc-secondary" data-toggle-password aria-pressed="false" aria-label="Show or hide password">Show</button>
+      </div>
     </label>
     <button class="mc-primary" type="submit">Enter control</button>
     <p class="mc-message" data-login-message aria-live="polite"></p>
   </form>
-  <p class="mc-note">This page is private, noindexed and uses a signed HttpOnly owner session.</p>
+  <p class="mc-note" data-login-help>Enter the <strong>value</strong> of your Cloudflare admin secret, not the text “mamtu_token”. You only need to sign in again when your session expires or you log out.</p>
   <a class="mc-back" href="/">← Back to website</a>
 </section>
 
