@@ -2,6 +2,9 @@ const loginView = document.querySelector("[data-login-view]");
 const appView = document.querySelector("[data-app-view]");
 const loginForm = document.querySelector("[data-login-form]");
 const loginMessage = document.querySelector("[data-login-message]");
+const loginHelp = document.querySelector("[data-login-help]");
+const loginInput = loginForm?.querySelector('[name="token"]');
+const showPasswordButton = document.querySelector("[data-toggle-password]");
 const saveButton = document.querySelector("[data-save]");
 const saveStateLabel = document.querySelector("[data-save-state]");
 const saveDetail = document.querySelector("[data-save-detail]");
@@ -205,8 +208,25 @@ function showLogin(message = "") {
 async function showApp() {
   loginView.hidden = true;
   appView.hidden = false;
-  await loadState();
+  try {
+    await loadState();
+  } catch (error) {
+    // A storage error must never masquerade as a login failure.
+    persistent = false;
+    renderStorage();
+    setDirty(false);
+    saveStateLabel.textContent = "Signed in — storage could not load";
+    saveDetail.textContent = error.message || "Check the D1 connection.";
+  }
 }
+
+showPasswordButton?.addEventListener("click", () => {
+  if (!loginInput) return;
+  const visible = loginInput.type === "text";
+  loginInput.type = visible ? "password" : "text";
+  showPasswordButton.textContent = visible ? "Show" : "Hide";
+  showPasswordButton.setAttribute("aria-pressed", String(!visible));
+});
 
 loginForm?.addEventListener("submit", async event => {
   event.preventDefault();
@@ -223,6 +243,7 @@ loginForm?.addEventListener("submit", async event => {
     await showApp();
   } catch (error) {
     loginMessage.textContent = error.message;
+    if (error.body?.hint && loginHelp) loginHelp.textContent = error.body.hint;
   } finally {
     button.disabled = false;
   }
@@ -333,8 +354,9 @@ async function bootstrap() {
   populateMediaOptions();
   try {
     const session = await api("/api/admin/session");
+    if (loginHelp && session.credentialHint) loginHelp.textContent = session.credentialHint;
     if (session.authenticated) await showApp();
-    else showLogin(session.secretConfigured ? "" : "The Worker admin secret is not configured yet.");
+    else showLogin(session.secretConfigured ? "" : "Owner login is not configured yet. See the instructions below.");
   } catch (error) {
     showLogin(error.message);
   }
