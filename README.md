@@ -102,3 +102,26 @@ Do not add private residential addresses, identity documents, credentials, or fa
 Deployment sync: Details page removed after the latest premium gallery/services updates; practical facts retained in Mamtu Assistant RAG.
 
 Deployment trigger: seven-page site with practical details served through Mamtu Assistant RAG.
+
+
+## Mamtu Control
+
+Private owner controls are available at `/admin`.
+
+Current controls:
+- availability status, optional expiry date and public announcement;
+- WhatsApp and Telegram details;
+- public profile wording used by the runtime assistant;
+- public rates;
+- homepage featured images/video chosen from the existing repository media;
+- Mamtu Assistant enabled/paused state;
+- version history, restore and JSON export.
+
+Security and persistence:
+- login uses `MAMTU_ADMIN_PASSWORD` when configured, otherwise the existing `MAMTU_TOKEN` / `mamtu_token`;
+- the browser receives only a signed HttpOnly, Secure, SameSite=Strict session cookie;
+- admin pages and APIs are `noindex` / `no-store`;
+- saved content is stored in Cloudflare D1 and tables are created automatically on first use;
+- accepted D1 binding names are `MAMTU_DB`, `DB`, or `mamtu_db`.
+
+Runtime edits are overlays. They do **not** rewrite `data/mamtu-data.js`, `lib/mamtu-knowledge.js`, or the assistant system prompt. If D1 is unavailable, the public website and assistant fall back to the repository data.
