@@ -63,9 +63,9 @@ export const MAMTU_DATA = {
     title: "Mamtu Afterhours",
     kicker: "Stay close",
     body: "Mamtu's official ways to stay in touch, revisit the gallery and check the practical pages — all in one place.",
-    primaryLabel: "Telegram",
-    primaryDetail: "@mistressmamtu",
-    primaryUrl: "https://t.me/mistressmamtu"
+    primaryLabel: "WhatsApp",
+    primaryDetail: "+91 836 841 0417",
+    primaryUrl: "https://wa.me/918368410417"
   },
   policies: {
     adultsOnly: true,
