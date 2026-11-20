@@ -192,12 +192,12 @@
     if(!panel?.hidden)setAssistant(false);popupReturn=document.activeElement;
     let data=null;try{data=(await import("/data/mamtu-data.js")).MAMTU_DATA}catch{}
     const c=data?.contact||{whatsappDisplay:"+91 836 841 0417",whatsappUrl:"https://wa.me/918368410417",telegramHandle:"@mistressmamtu",telegramUrl:"https://t.me/mistressmamtu"};
-    const after=data?.afterhours||{title:"Mamtu Afterhours",kicker:"Stay close",body:"Official ways to stay in touch, all in one place.",primaryUrl:c.telegramUrl,primaryLabel:"Telegram",primaryDetail:c.telegramHandle};
+    const after=data?.afterhours||{title:"Mamtu Afterhours",kicker:"Stay close",body:"Official ways to stay in touch, all in one place.",primaryUrl:c.whatsappUrl,primaryLabel:"WhatsApp",primaryDetail:c.whatsappDisplay};
     const links=[
-      {label:"WhatsApp",detail:c.whatsappDisplay,href:c.whatsappUrl,external:true},
       {label:"Telegram",detail:c.telegramHandle,href:c.telegramUrl,external:true},
       {label:"Gallery",detail:"The growing photo collection",href:"/gallery.html"},
-      {label:"Services",detail:"Public service categories",href:"/services.html"}
+      {label:"Services",detail:"Public service categories",href:"/services.html"},
+      {label:"Contact",detail:"All official contact options",href:"/contact.html"}
     ];
     const grid=links.map(item=>'<a href="'+escapeHtml(item.href)+'"'+(item.external?' target="_blank" rel="noopener noreferrer"':'')+'><span>'+escapeHtml(item.label)+'</span><small>'+escapeHtml(item.detail)+'</small><b aria-hidden="true">↗</b></a>').join("");
     const popup=document.createElement("div");popup.className="afterhours-backdrop";popup.dataset.afterhoursPopup="true";
