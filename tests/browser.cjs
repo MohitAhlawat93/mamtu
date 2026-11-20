@@ -2,7 +2,7 @@ const {chromium}=require("playwright");
 const assert=require("node:assert/strict");
 const fs=require("node:fs");
 const BASE="https://mamtu.mohit-datascientist108.workers.dev";
-const routes=["/","/about.html","/gallery.html","/videos.html","/services.html","/reviews.html","/details.html","/contact.html"];
+const routes=["/","/about.html","/gallery.html","/videos.html","/services.html","/reviews.html","/contact.html"];
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 (async()=>{
 let browser;
@@ -17,7 +17,7 @@ try{
     await sleep(12000);
   }
   assert(ready,"Cloudflare did not serve the expanded Mamtu homepage");
-  for(const url of [...routes,"/atelier.css?v=editorial-20261120-v3","/atelier.js?v=editorial-20261120-v3","/assistant.css?v=rag-20261120-v3","/assistant.js?v=rag-20261120-v3","/data/mamtu-data.js","/assets/mark.svg"]){
+  for(const url of [...routes,"/atelier.css","/atelier.js","/assistant.css","/assistant.js","/data/mamtu-data.js","/assets/mark.svg"]){
     const res=await fetch(BASE+url,{signal:AbortSignal.timeout(15000)});
     assert(res.ok,"Missing live route/asset "+url+" HTTP "+res.status);
   }
@@ -25,6 +25,8 @@ try{
   fs.mkdirSync("artifacts",{recursive:true});
   const page=await browser.newPage({viewport:{width:1440,height:900}});
   const errors=[];page.on("pageerror",e=>errors.push(e.message));
+  const removedDetails=await fetch(BASE+"/details.html",{redirect:"manual",signal:AbortSignal.timeout(15000)});
+  assert([404,410].includes(removedDetails.status)||[301,302,307,308].includes(removedDetails.status),"Removed Details route should not render as a live page");
   const configResponse=await fetch(BASE+"/api/assistant-config",{signal:AbortSignal.timeout(15000)});
   assert(configResponse.ok,"Assistant config endpoint unavailable");
   const configPayload=await configResponse.json();
@@ -58,15 +60,15 @@ try{
   assert(!/PHOTO\s+0\d/i.test(bodyText),"Numbered photo label visible on homepage");
   assert(!/VIDEO\s+0\d/i.test(bodyText),"Numbered video label visible on homepage");
   await page.goto(BASE+"/gallery.html");
-  assert.equal(await page.locator(".gallery-card").count(),8);
-  assert.equal(await page.locator(".story-description").count(),8);
-  assert.equal(await page.locator("#lightboxCount").count(),0);
-  await page.locator(".gallery-card").first().click();
+  assert.equal(await page.locator("[data-photo-index]").count(),8);
+  assert.equal(await page.locator(".masonry-item").count(),8);
+  assert.equal(await page.locator("#lightboxCount").count(),1);
+  await page.locator("[data-photo-index]").first().click();
   assert(await page.locator("#lightbox").evaluate(el=>el.open),"Lightbox did not open");
   assert((await page.locator("#lightboxTitle").innerText()).length>5);
   await page.keyboard.press("Escape");
   await page.goto(BASE+"/services.html");
-  assert.equal(await page.locator(".service-card").count(),6);
+  assert.equal(await page.locator(".service-card-v2").count(),12);
   await page.goto(BASE+"/reviews.html");
   assert((await page.locator(".review-empty-state").innerText()).includes("No public reviews"));
   await page.goto(BASE+"/contact.html");
@@ -88,6 +90,7 @@ try{
   assert(await mobile.locator("#mobileNav").isVisible(),"Mobile navigation broken");
   assert.equal(await mobile.locator('#mobileNav a[href="/services.html"]').count(),1);
   assert.equal(await mobile.locator('#mobileNav a[href="/reviews.html"]').count(),1);
+  assert.equal(await mobile.locator('#mobileNav a[href="/details.html"]').count(),0);
   const overflow=await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
   assert(overflow<=2,"Mobile horizontal overflow "+overflow);
   await mobile.screenshot({path:"artifacts/mamtu-expanded-mobile.png",fullPage:true});
