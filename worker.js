@@ -127,7 +127,25 @@ export async function generateAssistantAnswer({message,history=[],page="/",data=
   const recent=history.filter(x=>x.role==="user").slice(-2).map(x=>x.content).join(" ");
   const query=recent?recent+" "+message:message;
   const chunks=retrieveMamtuKnowledge(query,8,data,{page});
-  const context=formatMamtuContext(chunks);
+  // Query approved, published D1 knowledge when available. Never expose unpublished rows.
+  if(env.DB){
+    try{
+      const terms=[...new Set(query.toLowerCase().match(/[a-z0-9]{3,}/g)||[])].slice(0,8);
+      if(terms.length){
+        const clauses=terms.map(()=>"(lower(title) LIKE ? OR lower(content) LIKE ? OR lower(tags) LIKE ?)").join(" OR ");
+        const args=terms.flatMap(t=>Array(3).fill("%"+t+"%"));
+        const result=await env.DB.prepare(
+          "SELECT id,title,content,page_path FROM public_knowledge WHERE is_published=1 AND ("+clauses+") LIMIT 6"
+        ).bind(...args).all();
+        for(const row of result.results||[]){
+          chunks.unshift({id:"d1:"+row.id,title:row.title,text:row.content,path:row.page_path||"/"});
+        }
+      }
+    }catch(error){
+      console.warn("D1 knowledge unavailable; using embedded knowledge",error?.message||error);
+    }
+  }
+  const context=formatMamtuContext(chunks.slice(0,10));
   if(!env.GROQ_API_KEY)return {answer:fallbackFor(message,data),mode:"grounded-fallback",suggestion:suggestionFor(message),actions:[],needsMamtu:needsMamtu(message)};
 
   try{
