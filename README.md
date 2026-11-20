@@ -49,3 +49,48 @@ Run `npm test` for source-level smoke checks. The checks cover:
 ## Privacy
 
 Keep the workers.dev staging site `noindex,nofollow` until the subject has reviewed the complete website and consented to public launch. Do not publish a precise residential address, identity documents, credentials or other sensitive personal information.
+
+
+## Mamtu Assistant RAG
+
+Mamtu now has a Rebecca-style public assistant architecture adapted to Cloudflare Workers.
+
+Public UI:
+- Floating **Mamtu Assistant** launcher on every page.
+- Page-aware suggested questions.
+- Recent-conversation memory in the browser.
+- Safe action links to relevant pages, WhatsApp and Telegram.
+- Resizable desktop panel.
+- One-time session auto-open for discoverability.
+- Separate **Stay close / Afterhours** launcher with Mamtu Afterhours, Telegram, WhatsApp, Gallery and Services.
+
+RAG/data architecture:
+- `data/mamtu-data.js` — the single structured public-data source to edit as Mamtu's facts change.
+- `lib/mamtu-knowledge.js` — knowledge chunks, synonyms, ranking and focused-context retrieval.
+- `worker.js` — Cloudflare API routes, direct grounded answers, enquiry planner, privacy guardrails, rate limiting and Groq-backed generation.
+- `assistant.js` — browser chat UI, history, suggested prompts, safe actions and Afterhours.
+- `assistant.css` — assistant and Afterhours presentation.
+
+API routes:
+- `POST /api/assistant` — public assistant.
+- `GET /api/assistant-config` — public UI configuration and whether model generation is configured.
+- `GET /api/assistant-health` — lightweight deployment/model-configuration status.
+
+The Worker uses the same model default as the Rebecca concierge port: `openai/gpt-oss-120b` through Groq. Configure the Cloudflare Worker secret `GROQ_API_KEY` to enable model-backed RAG generation. Optional `GROQ_MODEL` can override the model.
+
+Without `GROQ_API_KEY`, Mamtu Assistant remains functional through grounded direct answers, structured retrieval and deterministic fallback; it does not invent a model answer.
+
+### Updating assistant data
+
+For the next data-refinement pass, change `data/mamtu-data.js` rather than rewriting the engine. The main editable groups are:
+- `profile`
+- `services`
+- `gallery`
+- `videos`
+- `reviews`
+- `contact`
+- `afterhours`
+- `policies`
+- `site`
+
+Do not add private residential addresses, identity documents, credentials, or fabricated reviews to the public RAG source.
