@@ -12,7 +12,6 @@ GitHub's `main` branch automatically deploys to Cloudflare Workers.
 - `videos.html` — personal video collection with descriptive editorial captions, without visible media numbering.
 - `services.html` — private/social service categories; exact arrangements and pricing are discussed privately rather than invented publicly.
 - `reviews.html` — honest review archive. No fabricated testimonials or star ratings; genuine reviews can be added with permission.
-- `details.html` — practical profile details, privacy notes and FAQs.
 - `contact.html` — official WhatsApp (+91 836 841 0417) and Telegram (@mistressmamtu).
 
 ## Brand
@@ -34,7 +33,7 @@ Featured media and viewers use `object-fit: contain` where full portrait visibil
 
 Run `npm test` for source-level smoke checks. The checks cover:
 
-- all eight site routes;
+- all seven public site routes;
 - navigation consistency;
 - Mamtu monogram;
 - WhatsApp and Telegram links;
@@ -82,8 +81,11 @@ Without `GROQ_API_KEY`, Mamtu Assistant remains functional through grounded dire
 
 ### Updating assistant data
 
+Practical information previously shown on the public Details page now lives in the RAG data and is answered through Mamtu Assistant. There is no public `details.html` route.
+
 For the next data-refinement pass, change `data/mamtu-data.js` rather than rewriting the engine. The main editable groups are:
 - `profile`
+- `practical`
 - `services`
 - `gallery`
 - `videos`
@@ -97,4 +99,4 @@ Do not add private residential addresses, identity documents, credentials, or fa
 
 ## Deployment sync
 
-Deployment sync: latest main includes user updates through bef8e932b3556952026da60ed289f95fdedb4dc1.
+Deployment sync: Details page removed after the latest premium gallery/services updates; practical facts retained in Mamtu Assistant RAG.
