@@ -114,7 +114,7 @@
   };
   async function localGroundedAnswer(message=""){
     const q=String(message).toLowerCase();
-    let data=null;try{data=(await import("/data/mamtu-data.js")).MAMTU_DATA}catch{}
+    let data=null;try{data=(await import("/data/mamtu-data.js?v=rag-20261120-v3")).MAMTU_DATA}catch{}
     const c=data?.contact||{whatsappDisplay:"+91 836 841 0417",telegramHandle:"@mistressmamtu"};
     if(/^(hi|hello|hey|hiya|good morning|good afternoon|good evening)[!.?\\s]*$/.test(q))return "Hi ✦ Lovely to meet you. I’m Mamtu Assistant. What would you like to know?";
     if(/who are you|your name/.test(q))return "I’m Mamtu Assistant ✦ I can help with Mamtu’s public profile, gallery, services, practical details and contact routes.";
