@@ -2,12 +2,12 @@
 const OWNER_CONTACT_EMAIL = ''; // Add owner-verified email; never invent.
 const FEATURE_VIDEO_ENABLED = false; // Set true after assets/videos/feature.mp4 exists.
 const gallery=[
- {title:'Crimson interlude',subtitle:'ART STUDY / 01',file:''},
- {title:'An elegant pause',subtitle:'ART STUDY / 02',file:''},
- {title:'Light & shadow',subtitle:'ART STUDY / 03',file:''},
- {title:'The quiet moment',subtitle:'ART STUDY / 04',file:''},
- {title:'Between the lines',subtitle:'ART STUDY / 05',file:''},
- {title:'A study in presence',subtitle:'ART STUDY / 06',file:''}
+ {title:'Crimson interlude',subtitle:'ART STUDY / 01',file:'assets/images/art-study-01.svg'},
+ {title:'An elegant pause',subtitle:'ART STUDY / 02',file:'assets/images/art-study-02.svg'},
+ {title:'Light & shadow',subtitle:'ART STUDY / 03',file:'assets/images/art-study-03.svg'},
+ {title:'The quiet moment',subtitle:'ART STUDY / 04',file:'assets/images/art-study-04.svg'},
+ {title:'Between the lines',subtitle:'ART STUDY / 05',file:'assets/images/art-study-05.svg'},
+ {title:'A study in presence',subtitle:'ART STUDY / 06',file:'assets/images/art-study-06.svg'}
 ];
 const $=id=>document.getElementById(id);
 $('year').textContent=new Date().getFullYear();
