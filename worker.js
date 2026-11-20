@@ -1,6 +1,7 @@
 import { MAMTU_DATA } from "./data/mamtu-data.js";
 import { formatMamtuContext } from "./lib/mamtu-knowledge.js";
 import { retrieveHybridMamtuKnowledge, DEFAULT_EMBEDDING_MODEL } from "./lib/semantic-retrieval.js";
+import { applyAdminOverlay, handleAdminApi, loadAdminState, publicContentResponse } from "./lib/admin-control.js";
 
 const SYSTEM=`You are Mamtu Assistant: warm, confident, concise, discreet, perceptive and genuinely useful.
 
@@ -112,7 +113,16 @@ function directAnswerFor(message="",data=MAMTU_DATA){
     return "Public offerings include incall, outcall (5-star only), overnight, two-shot sessions, GFE, erotic/tantric massage, role play, dinner dates, video calls and custom/threesome by arrangement. Intimate service covers kissing, oral, penetrative sex (pussy only) and cum play by agreement. See the Services page for starting rates.";
   }
 
-  if(/available|availability|today|tonight|tomorrow|this week|free now/.test(q))return "Live availability is not published on the website. Message Mamtu on WhatsApp or Telegram (@mistressmamtu) to check current availability.";
+  if(/available|availability|today|tonight|tomorrow|this week|free now/.test(q)){
+    const availability=data.runtime?.availability;
+    if(availability){
+      const labels={accepting:"Accepting enquiries",limited:"Limited availability",away:"Temporarily away",unavailable:"Not accepting enquiries"};
+      const label=labels[availability.status]||"Availability";
+      const note=availability.note?" "+availability.note:"";
+      return label+"."+note+" Exact dates and time slots are still confirmed directly by Mamtu on WhatsApp or Telegram.";
+    }
+    return "Live availability is not published on the website. Message Mamtu on WhatsApp or Telegram (@mistressmamtu) to check current availability.";
+  }
   if(/whatsapp|phone|number/.test(q))return "Official WhatsApp: "+c.whatsappDisplay+". Message politely and mention that you accept the rates.";
   if(/telegram|afterhours|stay close|follow/.test(q))return "Official Telegram: "+c.telegramHandle+". You can also use WhatsApp from the Contact page.";
   if(/review|testimonial|feedback/.test(q))return "There are no public reviews published yet. The site does not use fabricated testimonials.";
@@ -157,7 +167,16 @@ function enquiryPlan(message="",data=MAMTU_DATA){
     const ind=data.pricing?.indicative||{};
     return {answer:"Indicative rates are published: Incall from "+(ind.incall1h||"₹40,000")+"/hr, Outcall from "+(ind.outcall1h||"₹60,000")+"/hr, full night around "+(ind.fullNight||"₹2,00,000")+". Rates are selective by design — no bargaining. Message Mamtu on WhatsApp or Telegram if the numbers work for you.",mode:"grounded-planner",suggestion:null,actions};
   }
-  if(/available|availability|today|tonight|tomorrow/.test(q))return {answer:"I can’t confirm live availability. Send Mamtu your preferred date or time window and the kind of plan you have in mind on WhatsApp or Telegram; she’ll confirm directly.",mode:"grounded-planner",suggestion:null,actions};
+  if(/available|availability|today|tonight|tomorrow/.test(q)){
+    const availability=data.runtime?.availability;
+    if(availability){
+      const labels={accepting:"Accepting enquiries",limited:"Limited availability",away:"Temporarily away",unavailable:"Not accepting enquiries"};
+      const label=labels[availability.status]||"Availability";
+      const note=availability.note?" "+availability.note:"";
+      return {answer:"Current website status: "+label+"."+note+" Exact dates and time slots are still confirmed directly by Mamtu on WhatsApp or Telegram.",mode:"grounded-planner",suggestion:null,actions};
+    }
+    return {answer:"I can’t confirm live availability. Send Mamtu your preferred date or time window and the kind of plan you have in mind on WhatsApp or Telegram; she’ll confirm directly.",mode:"grounded-planner",suggestion:null,actions};
+  }
   return {answer:"To enquire, message Mamtu on WhatsApp or Telegram with: (1) incall or outcall, (2) preferred date/time window, (3) duration, and (4) confirmation that you accept the published rate ranges. She confirms the rest herself.",mode:"grounded-planner",suggestion:null,actions};
 }
 function modelAnswerFrom(body){
@@ -236,19 +255,61 @@ async function handleAssistant(request,env){
   if(!message)return json({error:"Please enter a message."},400);
   const history=Array.isArray(body.history)?body.history.slice(-12).map(item=>({role:item?.role==="assistant"?"assistant":"user",content:typeof item?.content==="string"?item.content.trim().slice(0,1000):""})).filter(x=>x.content):[];
   const page=cleanPage(typeof body.page==="string"?body.page:"/");
-  const result=await generateAssistantAnswer({message,history,page,data:MAMTU_DATA,env});
+  const admin=await loadAdminState(env,MAMTU_DATA);
+  const data=applyAdminOverlay(MAMTU_DATA,admin.state);
+  if(admin.state?.assistant?.enabled===false){
+    return json({answer:admin.state.assistant.pausedMessage,mode:"paused",suggestion:null,actions:[]});
+  }
+  const result=await generateAssistantAnswer({message,history,page,data,env});
   const {needsMamtu,...publicResult}=result;
   return json(publicResult);
 }
+async function serveAsset(request,env,url){
+  const isAdmin=url.pathname==="/admin"||url.pathname==="/admin/"||url.pathname==="/admin.html";
+  let assetRequest=request;
+  if(isAdmin&&url.pathname!=="/admin.html"){
+    const assetUrl=new URL(request.url);
+    assetUrl.pathname="/admin.html";
+    assetRequest=new Request(assetUrl.toString(),request);
+  }
+  let response=await env.ASSETS.fetch(assetRequest);
+  const contentType=response.headers.get("Content-Type")||"";
+  if(!isAdmin&&response.ok&&contentType.includes("text/html")){
+    try{
+      response=new HTMLRewriter().on("body",{
+        element(element){
+          element.append('<script src="/public-admin.js?v=mc-20261120-v1" defer></script>',{html:true});
+        }
+      }).transform(response);
+    }catch(error){
+      console.error("Mamtu Control public overlay injection failed:",error?.message||error);
+    }
+  }
+  if(isAdmin){
+    const headers=new Headers(response.headers);
+    headers.set("Cache-Control","no-store");
+    headers.set("X-Robots-Tag","noindex, nofollow, noarchive");
+    return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
+  }
+  return response;
+}
+
 export default {
   async fetch(request,env){
     const url=new URL(request.url);
+    if(url.pathname.startsWith("/api/admin/"))return handleAdminApi(request,env,MAMTU_DATA,url.pathname);
+    if(url.pathname==="/api/public-content"){
+      if(request.method!=="GET")return json({error:"Use GET."},405);
+      return publicContentResponse(env,MAMTU_DATA);
+    }
     if(url.pathname==="/api/assistant")return handleAssistant(request,env);
     if(url.pathname==="/api/assistant-config"){
       if(request.method!=="GET")return json({error:"Use GET."},405);
-      return json({ok:true,configured:Boolean(env.AI||env.GROQ_API_KEY),config:{enabled:true,displayName:"Mamtu Assistant",subtitle:"Profile, services, rates & practicalities.",welcome:"Hi ✦ I’m Mamtu Assistant.",defaultIntro:"Ask me about Mamtu’s profile, services, rates, what she offers, or how to get in touch.",pausedMessage:"Mamtu Assistant is taking a short pause. Please use WhatsApp or Telegram for anything time-sensitive."}});
+      const admin=await loadAdminState(env,MAMTU_DATA);
+      const assistant=admin.state?.assistant||{};
+      return json({ok:true,configured:Boolean(env.AI||env.GROQ_API_KEY),config:{enabled:assistant.enabled!==false,displayName:"Mamtu Assistant",subtitle:"Profile, services, rates & practicalities.",welcome:"Hi ✦ I’m Mamtu Assistant.",defaultIntro:"Ask me about Mamtu’s profile, services, rates, what she offers, or how to get in touch.",pausedMessage:assistant.pausedMessage||"Mamtu Assistant is taking a short pause. Please use WhatsApp or Telegram for anything time-sensitive."}});
     }
     if(url.pathname==="/api/assistant-health")return json({ok:true,modelConfigured:Boolean(env.AI||env.GROQ_API_KEY),retrieval:{lexical:true,embedding:{configured:Boolean(env.AI),model:env.CLOUDFLARE_EMBEDDING_MODEL||DEFAULT_EMBEDDING_MODEL}},providers:{groq:{configured:Boolean(env.GROQ_API_KEY),model:env.GROQ_MODEL||"openai/gpt-oss-120b",priority:1},cloudflare:{configured:Boolean(env.AI),model:env.CLOUDFLARE_AI_MODEL||CLOUDFLARE_MODEL,priority:2}}});
-    return env.ASSETS.fetch(request);
+    return serveAsset(request,env,url);
   }
 };
