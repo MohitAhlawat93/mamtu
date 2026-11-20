@@ -17,7 +17,7 @@ try{
     await sleep(12000);
   }
   assert(ready,"Cloudflare did not serve the expanded Mamtu homepage");
-  for(const url of [...routes,"/atelier.css?v=editorial-20261120-v3","/atelier.js?v=editorial-20261120-v3","/assets/mark.svg"]){
+  for(const url of [...routes,"/atelier.css?v=editorial-20261120-v3","/atelier.js?v=editorial-20261120-v3","/assistant.css?v=rag-20261120","/assistant.js?v=rag-20261120","/data/mamtu-data.js","/assets/mark.svg"]){
     const res=await fetch(BASE+url,{signal:AbortSignal.timeout(15000)});
     assert(res.ok,"Missing live route/asset "+url+" HTTP "+res.status);
   }
@@ -25,6 +25,14 @@ try{
   fs.mkdirSync("artifacts",{recursive:true});
   const page=await browser.newPage({viewport:{width:1440,height:900}});
   const errors=[];page.on("pageerror",e=>errors.push(e.message));
+  const configResponse=await fetch(BASE+"/api/assistant-config",{signal:AbortSignal.timeout(15000)});
+  assert(configResponse.ok,"Assistant config endpoint unavailable");
+  const configPayload=await configResponse.json();
+  assert.equal(configPayload.config.displayName,"Mamtu Assistant");
+  const assistantResponse=await fetch(BASE+"/api/assistant",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:"Where is Mamtu based?",history:[],page:"/"}),signal:AbortSignal.timeout(20000)});
+  assert(assistantResponse.ok,"Assistant endpoint unavailable");
+  const assistantPayload=await assistantResponse.json();
+  assert(/Saket|New Delhi/i.test(assistantPayload.answer),"Grounded assistant answer missing public base");
   await page.goto(BASE,{waitUntil:"domcontentloaded"});
   assert.equal(await page.locator(".featured-card").count(),3);
   assert.equal(await page.locator(".brand-mark").count()>0,true);
@@ -32,6 +40,12 @@ try{
   assert.equal(await page.locator(".home-service-card").count(),3);
   assert.equal(await page.locator('a[href="/services.html"]').count()>0,true);
   assert.equal(await page.locator('a[href="/reviews.html"]').count()>0,true);
+  await page.waitForSelector("[data-open-assistant]",{timeout:10000});
+  assert.equal((await page.locator("[data-open-assistant]").innerText()).includes("Mamtu Assistant"),true);
+  await page.locator("[data-afterhours-launcher]").click();
+  await page.waitForSelector("[data-afterhours-popup].is-visible",{timeout:5000});
+  assert.equal((await page.locator("[data-afterhours-popup]").innerText()).includes("Mamtu Afterhours"),true);
+  await page.keyboard.press("Escape");
   for(const index of [0,1]){
     const fit=await page.locator(".featured-card img").nth(index).evaluate(img=>getComputedStyle(img).objectFit);
     assert.equal(fit,"contain","Homepage image cropped");
@@ -58,6 +72,8 @@ try{
   const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
   const mobileErrors=[];mobile.on("pageerror",e=>mobileErrors.push(e.message));
   await mobile.goto(BASE,{waitUntil:"domcontentloaded"});
+  await mobile.waitForSelector("[data-open-assistant]",{timeout:10000});
+  assert.equal(await mobile.locator("[data-afterhours-launcher]").count(),1);
   await mobile.locator(".nav-toggle").click();
   assert(await mobile.locator("#mobileNav").isVisible(),"Mobile navigation broken");
   assert.equal(await mobile.locator('#mobileNav a[href="/services.html"]').count(),1);
