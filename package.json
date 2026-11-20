@@ -1,0 +1,1 @@
+{"name":"mamtu","version":"1.0.0","private":true,"scripts":{"check":"node --check app.js && node tests/smoke.cjs","test":"npm run check"}}
