@@ -355,6 +355,13 @@ async function bootstrap() {
   try {
     const session = await api("/api/admin/session");
     if (loginHelp && session.credentialHint) loginHelp.textContent = session.credentialHint;
+    if (loginInput) {
+      const pinMode = session.loginMethod === "pin";
+      loginInput.placeholder = pinMode ? "Enter your private PIN" : "Enter your admin password";
+      loginInput.inputMode = pinMode ? "numeric" : "text";
+      const label = loginInput.closest("label")?.querySelector("span");
+      if (label) label.textContent = pinMode ? "Private PIN" : "Admin password";
+    }
     if (session.authenticated) await showApp();
     else showLogin(session.secretConfigured ? "" : "Owner login is not configured yet. See the instructions below.");
   } catch (error) {
