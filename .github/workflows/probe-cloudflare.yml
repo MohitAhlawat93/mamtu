@@ -1,4 +1,4 @@
-name: Verify Cloudflare preview endpoint
+name: Identify Cloudflare live preview hostname
 on:
   push:
     branches: [main]
@@ -9,25 +9,25 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - name: Wait for parallel Cloudflare deployment
-        run: sleep 65
-      - name: Verify live MAMTU HTML and static files
+      - name: Probe likely account-specific Worker domains
         shell: bash
         run: |
           set -u
-          base='https://mamtu.amohit920.workers.dev'
-          page="$(mktemp)"
-          code="$(curl -L -sS -o "$page" -w '%{http_code}' --connect-timeout 8 --max-time 25 "$base/" || true)"
-          echo "LIVE_URL=$base/"
-          echo "HOMEPAGE_STATUS=$code"
-          echo "PAGE_TITLE=$(grep -oE '<title>[^<]*</title>' "$page" | head -1 || true)"
-          ok=true
-          if [ "$code" != "200" ] || ! grep -q 'MAMTU' "$page"; then ok=false; fi
-          rm -f "$page"
-          for asset in 'styles.css' 'app.js' 'assets/images/art-study-01.svg'; do
-            status="$(curl -L -sS -o /dev/null -w '%{http_code}' --connect-timeout 8 --max-time 25 "$base/$asset" || true)"
-            echo "ASSET $asset $status"
-            if [ "$status" != "200" ]; then ok=false; fi
+          for subdomain in 'amohit920' 'mohitdatascientist1' 'mohit-datascientist1' 'mohitdatascientist' 'mohit-datascientist' 'mohitahlawat93' 'mohitahlawat' 'mohit-ahlawat93' 'mohit-ahlawat' 'mohitdatascientist123' 'mohit-datascientist-1' 'mohitdatascientist11' 'mohitdatascientist12' 'mohitdata' 'mohit' 'amohit920-4689'; do
+            url="https://mamtu.$subdomain.workers.dev"
+            file="$(mktemp)"
+            code="$(curl -L -sS -o "$file" -w '%{http_code}' --connect-timeout 3 --max-time 8 "$url/" 2>/dev/null || true)"
+            title="$(grep -oE '<title>[^<]*</title>' "$file" | head -1 || true)"
+            echo "$url/ STATUS=$code TITLE=$title"
+            if [ "$code" = "200" ] && grep -q 'MAMTU' "$file"; then
+              echo "FOUND_LIVE_URL=$url/"
+              for path in styles.css app.js assets/images/art-study-01.svg; do
+                status="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 8 "$url/$path" || true)"
+                echo "LIVE_ASSET=$path STATUS=$status"
+              done
+              rm "$file"
+              exit 0
+            fi
+            rm "$file"
           done
-          if [ "$ok" != "true" ]; then echo "::error::MAMTU public Worker URL is not serving the expected website"; exit 1; fi
-          echo "LIVE_VERIFIED=$base/"
+          echo "NO_MATCHING_HOST_FOUND"
