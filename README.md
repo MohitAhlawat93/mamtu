@@ -125,3 +125,7 @@ Security and persistence:
 - accepted D1 binding names are `MAMTU_DB`, `DB`, or `mamtu_db`.
 
 Runtime edits are overlays. They do **not** rewrite `data/mamtu-data.js`, `lib/mamtu-knowledge.js`, or the assistant system prompt. If D1 is unavailable, the public website and assistant fall back to the repository data.
+
+### Simple PIN login
+
+In Cloudflare Workers > mamtu > Settings > Variables and Secrets, add an encrypted secret named `MAMTU_ADMIN_PIN` with a unique **8–12 digit** value. Keep the existing long random `MAMTU_TOKEN` (or use a new long random `MAMTU_SESSION_SECRET`) as the session-signing secret. Do not commit either secret to GitHub. The PIN takes precedence over the previous owner-password login; no change to the data source or system prompt is needed. A seven-day secure session is retained. The login page automatically shows PIN mode once deployed. An email OTP option would require Cloudflare Access or a mail service plus email allowlisting.
