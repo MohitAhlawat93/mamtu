@@ -47,7 +47,7 @@ Run `npm test` for source-level smoke checks. The checks cover:
 
 ## Privacy
 
-Keep the workers.dev staging site `noindex,nofollow` until the subject has reviewed the complete website and consented to public launch. Do not publish a precise residential address, identity documents, credentials or other sensitive personal information.
+The public site allows search engine indexing. `robots.txt` lists the sitemap and each public page provides its canonical URL and adult-content rating metadata. Search Console verification and sitemap submission should be completed by the site's owner. Do not publish a precise residential address, identity documents, credentials or other sensitive personal information.
 
 
 ## Mamtu Assistant RAG
