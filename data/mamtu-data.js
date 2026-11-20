@@ -27,6 +27,22 @@ export const MAMTU_DATA = {
       { question: "What are her hotel preferences?", answer: "For outcalls she accepts only five-star hotels. OYO and lower-tier properties are not accepted." }
     ]
   },
+  practical: {
+    residence: "Mamtu is based in Saket, South Delhi and says she lives in her own private flat. Exact residential details stay offline for privacy.",
+    personality: "Friendly, playful, outgoing, confident and well-mannered. She expects the same good manners in return.",
+    physicalPresence: "Soft curves and feminine proportions. Public figure information: 36-28-42.",
+    hygiene: "Mamtu states that she maintains herself carefully, takes hygiene seriously and has regular full-body checkups.",
+    photographs: "All photographs on the public site are genuine. Face photographs are limited for privacy; face verification is available after hotel booking confirmation.",
+    standards: [
+      "Gentlemen only.",
+      "Five-star hotels only for outcalls; OYO and lower-tier properties are not accepted.",
+      "Advance is required for outcalls.",
+      "Minimum engagement is generally two hours.",
+      "Time-wasters are blocked immediately."
+    ],
+    contactGuidance: "Use WhatsApp or Telegram with a polite, respectful introduction. Mamtu asks people not to message if the stated rates do not fit their budget.",
+    reusePolicy: "Photographs and videos should not be saved, reposted or reused without permission."
+  },
   services: [
     { title: "Incall – 1 Hour", category: "Incall", summary: "Private meeting at my place in Saket. Relaxed, intimate and focused entirely on you.", terms: "From ₹40,000", details: "Minimum engagement starts here." },
     { title: "Incall – 2 Hours", category: "Incall", summary: "Extended private time for deeper connection, conversation and a more unhurried experience.", terms: "From ₹70,000", details: "Recommended for first meetings." },
@@ -126,7 +142,6 @@ export const MAMTU_DATA = {
       { path: "/videos.html", label: "Videos" },
       { path: "/services.html", label: "Services" },
       { path: "/reviews.html", label: "Reviews" },
-      { path: "/details.html", label: "Details" },
       { path: "/contact.html", label: "Contact" }
     ]
   }
