@@ -89,7 +89,7 @@ function directAnswerFor(message="",data=MAMTU_DATA){
   if(/minimum engagement|minimum time|two hours|2 hours|min(imum)? (time|hours)/.test(q))return "Minimum engagement is generally two hours.";
 
   // Pricing — use published indicative rates
-  if(/price|pricing|rate|rates|cost|how much|fee|charges|charge|budget|bhao|discount|reduce|cheap/.test(q)){
+  if(/\b(?:price|pricing|rates?|cost|fee|charges?|budget|bhao|discount|reduce|cheap)\b|how much/.test(q)){
     const ind=pr?.indicative||{};
     return (pr?.philosophy?pr.philosophy+" ":"")+
       "Indicative rates: Incall from "+(ind.incall1h||"₹40,000")+"/hr, Outcall from "+(ind.outcall1h||"₹60,000")+"/hr, Full night around "+(ind.fullNight||"₹2,00,000")+", Two shots around "+(ind.twoShots||"₹1,00,000")+", Threesome full night around "+(ind.threesomeNight||"₹5,00,000")+", Webcam "+(ind.webcam30||"₹10,000 / 30 min")+". "+
