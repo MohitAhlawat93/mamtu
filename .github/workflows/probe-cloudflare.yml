@@ -9,19 +9,25 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - name: Check Cloudflare public URL candidates
+      - name: Wait for parallel Cloudflare deployment
+        run: sleep 65
+      - name: Verify live MAMTU HTML and static files
         shell: bash
         run: |
-          set +e
-          for url in 'https://mamtu.amohit920.workers.dev/' 'https://mamtu.pages.dev/' 'https://sharvarock-preview.amohit920.workers.dev/'; do
-            echo "PROBE_URL=$url"
-            echo "DNS:"
-            getent ahostsv4 "${url#https://}" | head -2
-            page="$(mktemp)"
-            status="$(curl -L -sS -o "$page" -w '%{http_code}' --connect-timeout 8 --max-time 20 "$url")"
-            echo "HTTP_STATUS=$status"
-            echo "BODY_TITLE=$(grep -oE '<title>[^<]*</title>' "$page" | head -1)"
-            echo "HAS_MAMTU=$(grep -ci 'MAMTU' "$page")"
-            rm -f "$page"
-            echo "-----"
+          set -u
+          base='https://mamtu.amohit920.workers.dev'
+          page="$(mktemp)"
+          code="$(curl -L -sS -o "$page" -w '%{http_code}' --connect-timeout 8 --max-time 25 "$base/" || true)"
+          echo "LIVE_URL=$base/"
+          echo "HOMEPAGE_STATUS=$code"
+          echo "PAGE_TITLE=$(grep -oE '<title>[^<]*</title>' "$page" | head -1 || true)"
+          ok=true
+          if [ "$code" != "200" ] || ! grep -q 'MAMTU' "$page"; then ok=false; fi
+          rm -f "$page"
+          for asset in 'styles.css' 'app.js' 'assets/images/art-study-01.svg'; do
+            status="$(curl -L -sS -o /dev/null -w '%{http_code}' --connect-timeout 8 --max-time 25 "$base/$asset" || true)"
+            echo "ASSET $asset $status"
+            if [ "$status" != "200" ]; then ok=false; fi
           done
+          if [ "$ok" != "true" ]; then echo "::error::MAMTU public Worker URL is not serving the expected website"; exit 1; fi
+          echo "LIVE_VERIFIED=$base/"
