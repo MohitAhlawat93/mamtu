@@ -9,8 +9,8 @@ for(const page of pages){
   const content=read(page);
   assert(content.includes('name="viewport"'),"Mobile viewport missing: "+page);
   assert(content.includes('name="robots" content="noindex,nofollow"'),"Staging indexing accidentally enabled: "+page);
-  assert(content.includes('href="/atelier.css?v=editorial-20261120-v2"'),"Versioned CSS missing: "+page);
-  assert(content.includes('src="/atelier.js?v=editorial-20261120-v2"'),"Versioned JS missing: "+page);
+  assert(content.includes('href="/atelier.css?v=editorial-20261120-v3"'),"Versioned CSS missing: "+page);
+  assert(content.includes('src="/atelier.js?v=editorial-20261120-v3"'),"Versioned JS missing: "+page);
   assert(content.includes('/assets/mark.svg'),"Mamtu brand mark missing: "+page);
   assert(content.includes('https://wa.me/918368410417'),"WhatsApp missing: "+page);
   assert(content.includes('https://t.me/mistressmamtu'),"Telegram missing: "+page);
