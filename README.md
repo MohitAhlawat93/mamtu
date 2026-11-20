@@ -94,3 +94,7 @@ For the next data-refinement pass, change `data/mamtu-data.js` rather than rewri
 - `site`
 
 Do not add private residential addresses, identity documents, credentials, or fabricated reviews to the public RAG source.
+
+## Deployment sync
+
+Deployment sync: latest main includes user updates through 895d071570d8d462083e20f360edfc72ce13f82f.
