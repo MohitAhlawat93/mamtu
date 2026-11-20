@@ -17,7 +17,7 @@ try{
     await sleep(12000);
   }
   assert(ready,"Cloudflare did not serve the expanded Mamtu homepage");
-  for(const url of [...routes,"/atelier.css?v=editorial-20261120-v3","/atelier.js?v=editorial-20261120-v3","/assistant.css?v=rag-20261120","/assistant.js?v=rag-20261120-v2","/data/mamtu-data.js","/assets/mark.svg"]){
+  for(const url of [...routes,"/atelier.css?v=editorial-20261120-v3","/atelier.js?v=editorial-20261120-v3","/assistant.css?v=rag-20261120-v3","/assistant.js?v=rag-20261120-v3","/data/mamtu-data.js","/assets/mark.svg"]){
     const res=await fetch(BASE+url,{signal:AbortSignal.timeout(15000)});
     assert(res.ok,"Missing live route/asset "+url+" HTTP "+res.status);
   }
@@ -45,6 +45,10 @@ try{
   await page.locator("[data-afterhours-launcher]").click();
   await page.waitForSelector("[data-afterhours-popup].is-visible",{timeout:5000});
   assert.equal((await page.locator("[data-afterhours-popup]").innerText()).includes("Mamtu Afterhours"),true);
+  const primaryAfterhours=page.locator(".afterhours-primary");
+  assert.equal((await primaryAfterhours.innerText()).includes("WhatsApp"),true);
+  assert.equal((await primaryAfterhours.innerText()).includes("+91 836 841 0417"),true);
+  assert.equal(await primaryAfterhours.getAttribute("href"),"https://wa.me/918368410417");
   await page.keyboard.press("Escape");
   for(const index of [0,1]){
     const fit=await page.locator(".featured-card img").nth(index).evaluate(img=>getComputedStyle(img).objectFit);
@@ -74,6 +78,12 @@ try{
   await mobile.goto(BASE,{waitUntil:"domcontentloaded"});
   await mobile.waitForSelector("[data-open-assistant]",{timeout:10000});
   assert.equal(await mobile.locator("[data-afterhours-launcher]").count(),1);
+  await mobile.locator("[data-open-assistant]").click();
+  const mobilePanel=mobile.locator("[data-assistant-panel]");
+  const panelBox=await mobilePanel.boundingBox();
+  assert(panelBox && panelBox.width<=282,"Mobile assistant is too wide");
+  assert(panelBox && panelBox.height<=312,"Mobile assistant is too tall");
+  await mobile.locator("[data-minimize-assistant]").click();
   await mobile.locator(".nav-toggle").click();
   assert(await mobile.locator("#mobileNav").isVisible(),"Mobile navigation broken");
   assert.equal(await mobile.locator('#mobileNav a[href="/services.html"]').count(),1);
