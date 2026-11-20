@@ -112,6 +112,25 @@
     });
     if(wrap.childElementCount){thread.appendChild(wrap);thread.scrollTop=thread.scrollHeight}
   };
+  async function localGroundedAnswer(message=""){
+    const q=String(message).toLowerCase();
+    let data=null;try{data=(await import("/data/mamtu-data.js")).MAMTU_DATA}catch{}
+    const c=data?.contact||{whatsappDisplay:"+91 836 841 0417",telegramHandle:"@mistressmamtu"};
+    if(/^(hi|hello|hey|hiya|good morning|good afternoon|good evening)[!.?\\s]*$/.test(q))return "Hi ✦ Lovely to meet you. I’m Mamtu Assistant. What would you like to know?";
+    if(/who are you|your name/.test(q))return "I’m Mamtu Assistant ✦ I can help with Mamtu’s public profile, gallery, services, practical details and contact routes.";
+    if(/where|location|saket|delhi|based/.test(q))return "Mamtu is publicly based in Saket, New Delhi. Her exact private residential address is intentionally not published.";
+    if(/price|pricing|rate|cost|how much|fee/.test(q))return "Exact pricing is not published on the website. Please ask Mamtu directly through WhatsApp or Telegram for current details.";
+    if(/available|availability|today|tonight|tomorrow/.test(q))return "Live availability is not published or guaranteed by the website. Mamtu confirms current availability herself through her official contact channels.";
+    if(/whatsapp|phone|number/.test(q))return "Mamtu’s official WhatsApp is "+c.whatsappDisplay+".";
+    if(/telegram|afterhours|stay close/.test(q))return "Mamtu’s official Telegram is "+c.telegramHandle+". You can also open the Stay close / Afterhours button for all official links.";
+    if(/review|testimonial|feedback/.test(q))return "There are no public reviews published yet. The website deliberately avoids fabricated testimonials.";
+    if(/service|appointment|dinner|outcall|extended|occasion|tailored/.test(q))return "Mamtu’s public Services page includes private appointments, dinner & conversation, outcall enquiries, extended time, social occasions and tailored enquiries. Exact arrangements are discussed privately.";
+    if(/gallery|photo|picture|style|outfit/.test(q))return "Mamtu’s gallery is a growing personal collection with mirror portraits, casual looks, travel moments and traditional styling.";
+    if(/video|film|clip/.test(q))return "Mamtu’s video page contains the current personal video collection and is designed to grow over time.";
+    if(/privacy|address|boundary|documents|sensitive/.test(q))return "Mamtu keeps her exact private address off the public site. Please don’t send identity documents, financial information, passwords or other sensitive data through the assistant.";
+    return "I can help with Mamtu’s public profile, gallery, videos, services, reviews, practical details and official contact routes. For current pricing or availability, please contact Mamtu directly.";
+  }
+
   async function ask(message,display=message){
     const q=String(message||"").trim();if(!q||!enabled)return;
     if(chips)chips.hidden=true;addMessage("user",String(display||q).trim()||q);remember("user",q);
@@ -127,8 +146,8 @@
       }
     }catch{
       pending?.remove();
-      const msg="I’m having a little trouble right now. Try again in a moment, or use Mamtu’s official WhatsApp or Telegram.";
-      addMessage("assistant",msg,"error");remember("assistant",msg);
+      const msg=await localGroundedAnswer(q);
+      addMessage("assistant",msg);remember("assistant",msg);
     }finally{
       if(send)send.disabled=false;
       if(input){input.disabled=false;input.value="";if(!matchMedia("(max-width: 640px)").matches)input.focus()}
