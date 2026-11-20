@@ -32,7 +32,7 @@
       document.getElementById("lightboxKicker").textContent=kicker;
       document.getElementById("lightboxTitle").textContent=title;
       document.getElementById("lightboxDescription").textContent=description;
-      count.textContent=String(index+1).padStart(2,"0")+" / "+String(buttons.length).padStart(2,"0");
+      if(count)count.textContent=String(index+1).padStart(2,"0")+" / "+String(buttons.length).padStart(2,"0");
     }
     buttons.forEach((button,i)=>button.addEventListener("click",()=>{
       focusBack=document.activeElement;show(i);dialog.showModal();
